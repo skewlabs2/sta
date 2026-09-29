@@ -26,7 +26,7 @@ There was no complete committed history for these working copies. File modificat
 
 ## Publication changes
 
-The public copy removes unreachable synthetic-price generation bodies, makes evidence output portable, and prevents the local Python API from discovering a production credential directory by default. It also tightens dataset admission against future or timezone-free manifest timestamps, oversized manifests and malformed prices.
+The public copy removes unreachable synthetic-price generation bodies, makes evidence output portable, and prevents the local Python API from discovering a production credential directory by default. Each sandbox job captures a bounded, hashed catalog instead of discovering a server-global file. It also tightens dataset admission against future or timezone-free manifest timestamps, oversized manifests and malformed prices.
 
 Added tests exhaust a 28,800-case policy grid, exercise 10,000 large-integer allocations, preserve a wallet fence across policy replacement and check approval digest sensitivity. These are deterministic property/contract checks, not a formal proof or live execution benchmark.
 

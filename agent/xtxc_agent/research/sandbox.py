@@ -40,7 +40,7 @@ import numpy as np
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]            # .../agent (contains xtxc_agent/)
 IMPLEMENTATION = ("research/strategies.py", "research/strategy_lang.py", "research/backtest.py", "research/evaluator.py",
-                  "research/sandbox.py")
+                  "research/sandbox.py", "research/universe.py", "research/universe_map.json", "research/token_products.json")
 LIMITS = {"cpu_s": 60, "wall_s": 120, "mem_mb": 2048, "out_mb": 16, "files": 64}
 TASKS = ("backtests", "leakage")
 BLOCKED_MODULES = {"socket", "ssl", "http", "urllib", "urllib3", "httpx", "requests", "subprocess", "ctypes", "multiprocessing",
@@ -70,14 +70,25 @@ def implementation_hash() -> str:
 # ------------------------------------------------------------------ job files
 def pack(job_dir: Path, task: str, payload: dict, prices, limits: dict) -> None:
     import pandas as pd
+    from .universe import catalog_report_path
     if task not in TASKS:
         raise SandboxError(f"unknown task {task}")
     job_dir.mkdir(parents=True, exist_ok=True)
     idx = pd.DatetimeIndex(prices.index)
     np.savez(job_dir / "prices.npz", days=(idx.values.astype("datetime64[D]").astype("int64")),
              tickers=np.array([str(c) for c in prices.columns]), values=prices.to_numpy(dtype="float64"))
-    (job_dir / "job.json").write_text(json.dumps({"task": task, "payload": payload, "limits": limits}))
-    for f in ("prices.npz", "job.json"):
+    # Capture the admitted universe with this job. A worker must not silently
+    # discover a server-global catalog or inherit the parent's credential env.
+    with catalog_report_path().open("rb") as f:
+        catalog = f.read(4_000_001)
+    if len(catalog) > 4_000_000:
+        raise SandboxError("catalog exceeds the job input limit")
+    if not isinstance(json.loads(catalog).get("products"), list):
+        raise SandboxError("invalid job catalog")
+    (job_dir / "catalog.json").write_bytes(catalog)
+    (job_dir / "job.json").write_text(json.dumps({"task": task, "payload": payload, "limits": limits,
+                                                "catalog_sha256": hashlib.sha256(catalog).hexdigest()}))
+    for f in ("prices.npz", "catalog.json", "job.json"):
         os.chmod(job_dir / f, 0o440)                                   # read-only inputs
 
 
@@ -144,6 +155,11 @@ def worker_main(job_dir: str) -> None:
     t0 = time.monotonic()
     job = json.loads((job_dir / "job.json").read_text())
     _set_limits(job["limits"])
+    with (job_dir / "catalog.json").open("rb") as f:
+        catalog = f.read(4_000_001)
+    if len(catalog) > 4_000_000 or hashlib.sha256(catalog).hexdigest() != job.get("catalog_sha256"):
+        raise SandboxError("job catalog hash mismatch")
+    os.environ["XTXC_CATALOG_REPORT"] = str(job_dir / "catalog.json")
     # load everything the task needs, then lock down
     import pandas  # noqa: F401
     from . import backtest, evaluator, strategies, strategy_lang  # noqa: F401

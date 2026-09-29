@@ -43,9 +43,9 @@ __all__ = [
 ]
 
 _HERE = Path(__file__).resolve().parent
-_NODE = Path("/srv/skew/stockmesh-direct-node-20260920")
-DEFAULT_CATALOG_REPORT = _NODE / "evidence/secondary-execution-20260928/catalog/report.json"
-DEFAULT_STOCK_CATALOG_DIR = _NODE / "source/secondary-execution-20260928/web/data/stock-catalog"
+_LOCAL = _HERE.parents[2] / ".local"
+DEFAULT_CATALOG_REPORT = _LOCAL / "catalog-report.json"
+DEFAULT_STOCK_CATALOG_DIR = _LOCAL / "stock-catalog"
 MAPPING_FILE = _HERE / "universe_map.json"
 PRODUCTS_FILE = _HERE / "token_products.json"
 MATCH_STATUS = "PAIR_IDENTITY_MATCH"

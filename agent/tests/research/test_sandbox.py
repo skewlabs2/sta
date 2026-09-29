@@ -1,5 +1,7 @@
 """격리 실행기: same numbers as the engine, guards that hold, limits that end runaway jobs, results re-checked."""
 import json
+import hashlib
+import os
 import subprocess
 import sys
 import threading
@@ -9,6 +11,19 @@ import pytest
 from xtxc_agent.research import sandbox
 from xtxc_agent.research.backtest import simulate
 from test_strategy_lang import _prices, spec
+
+
+def test_job_catalog_is_hash_bound_without_inheriting_secrets(tmp_path, monkeypatch):
+    sandbox.pack(tmp_path, "leakage", {"spec": spec()}, _prices(), sandbox.LIMITS)
+    job = json.loads((tmp_path / "job.json").read_text())
+    assert hashlib.sha256((tmp_path / "catalog.json").read_bytes()).hexdigest() == job["catalog_sha256"]
+    monkeypatch.setenv("KILN_API_KEY", "fixture-secret-do-not-inherit")
+    assert "KILN_API_KEY" not in sandbox._env(tmp_path)
+    # Mutating even valid JSON must fail before the strategy runs.
+    os.chmod(tmp_path / "catalog.json", 0o640)
+    (tmp_path / "catalog.json").write_text('{"products":[]}')
+    result = sandbox.run_worker(tmp_path, sandbox.LIMITS)
+    assert result["ok"] is False and "catalog hash mismatch" in result["error"]
 
 
 def test_isolated_backtest_matches_the_engine_and_says_how_it_ran():

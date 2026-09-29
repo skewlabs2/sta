@@ -1,6 +1,6 @@
 {
   "schema": "sta.publication-verification/v1",
-  "recordedAt": "2026-09-29T21:17:31.268648+00:00",
+  "recordedAt": "2026-09-29T21:22:16.705785+00:00",
   "environment": {
     "os": "Linux",
     "node": "22.23.2",
@@ -111,7 +111,7 @@
     ]
   },
   "python": {
-    "passed": 157,
+    "passed": 158,
     "skipped": 15,
     "failed": 0,
     "cases": [
@@ -827,6 +827,11 @@
       },
       {
         "class": "agent.tests.research.test_sandbox",
+        "name": "test_job_catalog_is_hash_bound_without_inheriting_secrets",
+        "status": "passed"
+      },
+      {
+        "class": "agent.tests.research.test_sandbox",
         "name": "test_isolated_backtest_matches_the_engine_and_says_how_it_ran",
         "status": "passed"
       },
@@ -1004,7 +1009,7 @@
   },
   "rawOutputHashes": {
     "node.tap": "c631555df8194e42005d729f711aa5772ee3bbd1d8c21871d6966fb077358af0",
-    "python.xml": "8529aadcf00e1ae490b2a7fc5b11e5bd1dea71c151e597e37d0a5733f41be126",
+    "python.xml": "7f89ed27c11e869188d6cbe7e9bd555f3db7b76d567c4be2e206a168bc52bce7",
     "rust.log": "dafb66e78248d850573333130660c87e65ebe39bfe4a87e8c75668dac9e794e5"
   },
   "mainnetTransactions": 0,

@@ -199,8 +199,8 @@
       "observedSourceMtime": "2026-09-29T15:08:38+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "df77f8da55f59d038f587b07e016fbb14f5855afa9699b45f26ab06934698df4",
-      "publicationSha256": "df77f8da55f59d038f587b07e016fbb14f5855afa9699b45f26ab06934698df4",
-      "modifiedForPublication": false
+      "publicationSha256": "46eea5988085d3e6d4427e6984880b21c367a38639c7148283472f3d8334910f",
+      "modifiedForPublication": true
     },
     {
       "path": "agent/tests/research/test_stockmesh_journal.py",
@@ -523,8 +523,8 @@
       "observedSourceMtime": "2026-09-29T15:08:22+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "6e4d00ae0abe116cd79c1c0a81a7a2126efa0479d86cb8efbf2fd5de285a8b6d",
-      "publicationSha256": "6e4d00ae0abe116cd79c1c0a81a7a2126efa0479d86cb8efbf2fd5de285a8b6d",
-      "modifiedForPublication": false
+      "publicationSha256": "092d7e13ecb165e75c63c719800c234d7041d62bab3ab16315f38d25e513d3b0",
+      "modifiedForPublication": true
     },
     {
       "path": "agent/xtxc_agent/research/stockmesh_journal.py",
@@ -568,8 +568,8 @@
       "observedSourceMtime": "2026-09-29T07:15:40+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "0ef247a3bb049dd9774c7f7aaedcdd935ca8666e34207f26165e65e086e3c345",
-      "publicationSha256": "0ef247a3bb049dd9774c7f7aaedcdd935ca8666e34207f26165e65e086e3c345",
-      "modifiedForPublication": false
+      "publicationSha256": "8ded5582a0a468b5ae7abcb53ada46764edc116ed12bacaad70622bdab8d0885",
+      "modifiedForPublication": true
     },
     {
       "path": "agent/xtxc_agent/research/universe_map.json",
