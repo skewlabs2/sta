@@ -28,3 +28,15 @@ test('signed owner approval is saved before transport and cannot be replaced',as
 test('unsigned or modified approvals are rejected without a transport entry',async t=>{const x=fixture(t),p=await x.gate.draft(x.owner,{plan:x.plan}),ready=await x.gate.prepareApproval(x.owner,p.id);await assert.rejects(x.gate.submitApproval(x.owner,p.id,ready.preparedApproval.transactionBase64));assert.equal(x.db.prepare('SELECT count(*) n FROM policy_transports').get().n,0);});
 test('stopping while funding is being checked wins over Start',async t=>{const x=fixture(t),p=await x.gate.draft(x.owner,{plan:x.plan});x.gate.save(x.gate.row(x.owner,p.id),'READY');x.stockmesh.portfolio=async()=>{x.gate.stop(x.owner,p.id);throw Error('stop race');};await assert.rejects(x.gate.start(x.owner,p.id,p.approvalHash));assert.equal(x.gate.row(x.owner,p.id).phase,'STOPPED');assert.equal(x.counts().signs,0);});
 test('agent funds are checked on the bound wallet, not personal holdings',async t=>{const x=fixture(t),p=await x.gate.draft(x.owner,{plan:x.plan});x.gate.save(x.gate.row(x.owner,p.id),'READY');x.stockmesh.portfolio=async owner=>({schema:'skew.stockmesh.portfolio/v1',network:'mainnet-beta',owner,stateSlot:1,observedAt:new Date().toISOString(),cash:[{symbol:'USDC',atoms:'0',decimals:6},{symbol:'SOL',atoms:'100',decimals:9}],holdings:[]});await assert.rejects(x.gate.start(x.owner,p.id,p.approvalHash),/AGENT_WALLET_NEEDS_USDC/);assert.equal(x.gate.row(x.owner,p.id).phase,'READY');});
+
+test('rebalance binds agent-held sells and subsequent purchases without counting token atoms as USDC',async t=>{
+ const x=fixture(t),{id,status,...doc}=x.plan;
+ Object.assign(doc,{budgetScope:'SELECTED_HOLDINGS_PLUS_NEW_CASH',budgetAtoms:'0',cashFloorAtoms:'1000000',cashAtoms:'1000000',snapshot:{owner:x.wallet,holdings:[{instrument:'NVDA',mint:x.mint,rawDecimals:9,atoms:'1000000000'}]},legs:[{instrument:'NVDA',side:'SELL',inputAtoms:'1000000000',inputDecimals:9,productMint:x.mint,minimumCashAtoms:'2000000'},{instrument:'AMD',side:'BUY',inputAtoms:'1000000',inputDecimals:6}]});
+ const plan={...doc,id:planHash(doc),status},buy=x.stockmesh.quote;
+ x.stockmesh.quote=async q=>q.side==='BUY'?buy(q):{schema:'skew.stockmesh.liquidation-quote/v1',side:'SELL',instrument:q.instrument,quoteId:'sell',inputProduct:{mint:x.mint,inputAtoms:q.inputAtoms},output:{symbol:'USDC',decimals:6,estimatedAtoms:'2001000',minimumAtoms:'2000000'},expiresAt:new Date(Date.now()+30000).toISOString()};
+ const p=await x.gate.draft(x.owner,{plan});assert.equal(p.config.schema,'xtxc.autonomy-policy/v2');assert.equal(p.config.buyBudgetAtoms,'1000000');assert.equal(p.config.trades[0].side,'SELL');assert.equal(p.config.trades[0].inputAtoms,'1000000000');assert.equal(x.counts().signs,0);
+ const bad={...doc,snapshot:{...doc.snapshot,owner:x.owner}};
+ await assert.rejects(x.gate.draft(x.owner,{plan:{...bad,id:planHash(bad),status}}),/REVIEW_AGENT_WALLET_HOLDINGS/);
+ const tooMuch={...doc,legs:[{...doc.legs[0],inputAtoms:'1000000001'},doc.legs[1]]};
+ assert.throws(()=>approvedAllocation(x.owner,{...tooMuch,id:planHash(tooMuch),status}),/SELL_EXCEEDS_APPROVED_HOLDINGS/);
+});

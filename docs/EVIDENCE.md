@@ -30,11 +30,27 @@ The model was `qwen3-32b`, provider Bricksum Kiln. Latencies are individual obse
 
 The reported deployed ELF matches the retained build hash. This is a historical deployment observation, not a guarantee that devnet state remains unchanged. No private deployment key or executable is published. The included SVM harness is a fixture execution environment; its CU observations, when run, apply to those instructions and accounts only.
 
-## What remains unproven
+## September 30 integration
+
+The actual PR5 data and PR7 DSL executor are connected to the production research worker. The release builder previously intersected data with an older execution catalog, dropping eight already-collected symbols. The repaired release includes all 58 requested symbols plus GLD/MCD/MSFT reference data. ASML has 4,209 retained sessions.
+
+Exact observations: [research integration](../evidence/research-integration-20260930.json), [compiled policy checks](../evidence/policy-v2-svm.json). The updated JavaScript suite passed 103/103 checks on the remote Linux host; the existing Rust unit suite passed 6/6. The web release build completed on that host. These counts do not stand in for funded acceptance.
+
+One actual Chrome research run returned three Kiln/Qwen designs and a computed refusal: the requested 20% maximum drawdown was exceeded by the candidates. This is a completed provider/research observation, not a simulated trade.
+
+V2 source adds exact ordered buy/sell commitments, agent-wallet holdings, sell-before-buy execution and direction-aware receipts. The compiled SBF passed 227 Mollusk checks, including JavaScript-to-SBF interoperability for 58 distinct stocks, mixed sells/buys, altered proofs/quantities/sides, replay and immutable budget state. These are local SVM checks, not on-chain signatures.
+
+The V2 contract was upgraded at the same devnet address in finalized slot `505683774`. [The deployment observation](../evidence/devnet-v2-observed.json) binds the transaction signature to the program and SHA-256 `06bddfd62810eb89fec0cc58137209ed56aff911aac361a446a319c4501108dd`. The downloaded program matches all 86,672 ELF bytes, with only zero padding after them. The separately retained V1 entry above remains historical.
+
+The new approval/holdings UI and isolated signing service were [promoted together](../evidence/service-integration-20260930.json). Existing wallet bindings, protected credentials and durable journals were retained. Research HTTP returned 200, signer health passed, and running policies remained zero. No approval, mainnet signature, funding or Start operation was performed by the deployment. A copied-directory read-permission failure was rolled back before promotion; the corrected release was then started successfully.
+
+The public static-file mapping initially still pointed to the previous release. It now serves a union of both releases' immutable assets, preserving already-open tabs. Chrome subsequently restored the existing wallet session and saved research, and displayed all three actual PR7 candidates with their refusal reasons. This is UI/service evidence, not a wallet authorization or mainnet fill.
+
+## Live acceptance ledger
 
 1. A funded, approved autonomous mainnet order completing the entire STA path, with reconciled holdings and its final devnet result record. Existing manual XTXC trades are not substitute evidence.
 2. A second changed-condition autonomous trade and a refused request tied to a complete demonstration recording.
-3. Autonomous selling/rebalancing and continuous portfolio management. The delegated controller currently admits new-capital buys.
+3. V2 autonomous selling/rebalancing is implemented and exercised in contract tests; funded live acceptance is pending. Continuous discretionary portfolio management is a separate scope from an exact owner-approved allocation.
 4. External audit, adversarial multi-provider consensus verification, multi-host durability and production latency/energy measurements.
 5. Organizer acceptance of the observed Qwen model. The [published Challenge A brief](https://docs.google.com/document/d/13qh7oePGl7Flrl-Zh_A6hfr02L266PvS/edit) names `gpt-oss-120b`; the repository does not assert an approved substitution.
 

@@ -8,7 +8,7 @@ import {join} from 'node:path';
 import {getTransactionDecoder,getTransactionEncoder} from '@solana/kit';
 import {DEVNET,MAINNET,STOCKMESH,USDC,TOKEN,COMPUTE,SYSTEM,ALT,keyString,keyBytes,validatePolicy,policyAddress,policyInstruction,policyTransaction,observePolicy,allowOrder,verifyExactSignature,hash} from '../lib/research-autonomy-policy.mjs';
 import {AutonomyJournal} from '../lib/research-autonomy-journal.mjs';
-import {inspectStockMeshBuy,decodeMessage} from '../lib/research-autonomy-wire.mjs';
+import {inspectStockMeshBuy,inspectStockMeshTrade,decodeMessage} from '../lib/research-autonomy-wire.mjs';
 import {AutonomyRuntime,verifyMainnetReceipt,PrivyDelegatedSigner,normalizeBuyQuote} from '../lib/research-autonomy-runtime.mjs';
 import {getProgramDerivedAddress} from '@solana/kit';
 const key=n=>keyString(Buffer.alloc(32,n));
@@ -57,4 +57,22 @@ test('runtime contract: devnet reservation precedes signing and exact mainnet de
  const stockmesh={quote:async()=>({schema:'skew.stockmesh.exposure-quote/v2',quoteId:x.prepared.quoteId,instrument:'NVDA',inputSymbol:'USDC',inAmountAtoms:'2000000',exposure:{estimatedQ32:'1000',minimumQ32:'998',products:[{mint:x.c.mints[0],rawOutputAtoms:'90'}]}}),prepare:async()=>x.prepared,submit:async()=>{events.push('submit');return{signature};}};
  const signer={assertBinding:async()=>{},signTransaction:async()=>{events.push('sign');return x.signed;}};
  try{const runtime=new AutonomyRuntime({journal,mainnet,devnet,stockmesh,signer}),r=await runtime.prepare(x.c.id,{instrument:'NVDA',mint:x.c.mints[0],inputAtoms:'2000000'});await assert.rejects(runtime.execute(r.id),/DEVNET_CONFIRMATION_PENDING/);assert.equal(journal.order(r.id).phase,'RECONCILED');assert.deepEqual(events,['reserve','sign','submit','settle']);const restarted=new AutonomyRuntime({journal,mainnet,devnet,stockmesh,signer});const done=await restarted.check(r.id);assert.equal(done.receipt.outputAtoms,'100');assert.equal(done.settlementSignature,'r'.repeat(88));assert.deepEqual(events,['reserve','sign','submit','settle','settle']);await assert.rejects(restarted.execute(r.id));assert.equal(events.filter(e=>e==='sign').length,1);}finally{db.close();}
+});
+
+test('SELL exact-wire receipt accounts for stock debit and USDC credit, not BUY units',async()=>{
+ const x=await sample(),ix=x.instructions[2],accounts=[...ix.accounts];
+ [accounts[2],accounts[5]]=[accounts[5],accounts[2]];
+ [accounts[3],accounts[6]]=[accounts[6],accounts[3]];
+ const unsigned=policyTransaction(x.wallet,[...x.instructions.slice(0,2),{...ix,accounts}],lifetime).transactionBase64;
+ const facts=await inspectStockMeshTrade(unsigned,x.wallet,{side:'SELL',mint:x.c.mints[0],inputAtoms:'2000000',minimumOutputAtoms:'90'},async()=>null);
+ const tx=getTransactionDecoder().decode(Buffer.from(unsigned,'base64'));
+ const signed=Buffer.from(getTransactionEncoder().encode({...tx,signatures:{[x.wallet]:sign(null,Buffer.from(tx.messageBytes),x.pair.privateKey)}})).toString('base64');
+ const row={wallet:x.wallet,prepared:{transactionBase64:unsigned},signedTransactionBase64:signed,signature:verifyExactSignature(unsigned,signed,x.wallet),facts};
+ const src=facts.keys.indexOf(facts.source),dst=facts.keys.indexOf(facts.destination),balance=(accountIndex,mint,amount)=>({accountIndex,mint,owner:x.wallet,uiTokenAmount:{amount}});
+ const observed={genesisHash:MAINNET,status:{confirmationStatus:'finalized',slot:1000,err:null},tx:{slot:1000,transaction:[signed,'base64'],meta:{err:null,fee:5000,preTokenBalances:[balance(src,x.c.mints[0],'3000000'),balance(dst,USDC,'7')],postTokenBalances:[balance(src,x.c.mints[0],'1000000'),balance(dst,USDC,'107')]}}};
+ const receipt=verifyMainnetReceipt(row,observed);
+ assert.equal(receipt.side,'SELL');assert.equal(receipt.inputAtoms,'2000000');assert.equal(receipt.outputAtoms,'100');assert.equal(receipt.destinationMint,USDC);
+ observed.tx.meta.postTokenBalances[1].uiTokenAmount.amount='96';
+ assert.throws(()=>verifyMainnetReceipt(row,observed),/TOKEN_DELIVERY_MISMATCH/);
+ await assert.rejects(inspectStockMeshTrade(unsigned,x.wallet,{side:'BUY',mint:x.c.mints[0],inputAtoms:'2000000',minimumOutputAtoms:'90'},async()=>null));
 });

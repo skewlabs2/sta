@@ -19,7 +19,7 @@ The execution host, its journal, the enrolled provider policy and the authorized
 
 Devnet reservations are not mainnet limits. A devnet reset, unavailable verifier or changed state stops new execution; it does not prove that earlier mainnet effects vanished. Revocation checked before relay is not atomic with mainnet inclusion. A previously signed transaction may still land.
 
-The current wire validator is deliberately narrow. Adding a new router instruction, mutable address-table behavior, authority shape, token program or autonomous sell path requires a new inspection/receipt specification and failure tests. Do not disable the validator to make a new route pass.
+The current wire validator is deliberately narrow. BUY and SELL have distinct source/destination mint and receipt checks. Adding a new router instruction, mutable address-table behavior, authority shape or token program requires a new inspection/receipt specification and failure tests. Do not disable the validator to make a new route pass.
 
 ## Resource and process limits
 

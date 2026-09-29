@@ -6,6 +6,7 @@ Reads the store read-only, fetches the Yahoo reference for verification (cached 
 prices/quant_release.json + price objects. Prints what was taken from where and why.
 """
 import argparse
+import csv
 import json
 from pathlib import Path
 
@@ -15,7 +16,12 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--store", default=str(quantstore.DEFAULT_STORE))
 ap.add_argument("--start", default="2010-01-01")
 args = ap.parse_args()
-tickers = sorted({i.ticker for i in universe.load_universe()} | {"QQQ", "SPY"})
+# Research history is not a liquidity admission list. The execution catalog
+# used to omit already-collected names (ASML) from every published release.
+# Keep every collected ticker; route eligibility is checked at execution time.
+with (Path(args.store) / quantstore.DAILY_MASTER).open(newline="") as f:
+    collected = {r["symbol"].strip().upper() for r in csv.DictReader(f)}
+tickers = sorted(collected | {i.ticker for i in universe.load_universe()} | {"QQQ", "SPY"})
 rel = quantstore.build_release(tickers, store_root=Path(args.store), start=args.start)
 print(json.dumps({k: rel[k] for k in ("release_id", "source", "store", "created_at")}, indent=1))
 groups: dict[str, list[str]] = {}

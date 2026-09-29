@@ -8,7 +8,7 @@ STA is a research system joined to an execution system by an immutable approval.
 
 `AgentStore` keeps owner-scoped strategies, versions, queued runs and execution steps in SQLite. Request IDs are bound to their request content. Worker leases carry fencing information so an expired worker cannot publish a late result over a newer run.
 
-The worker obtains a typed proposal from Kiln and launches the deterministic evaluator with a bounded environment, output size and timeout. Its default proposal chooses between weekly/monthly rebalancing and 21/63/126-session lookbacks. Prices are evaluated in code, not streamed into the prompt. The reusable research library supports a richer restricted DSL with capped terms and filters; it does not change what the deployed worker currently asks the model to do.
+The deployed worker obtains up to three typed DSL designs from Kiln and launches the existing PR7 deterministic executor through `compute/design_bridge.py`, with a bounded environment, output size and timeout. Prices stay out of the model prompt. Training-only selection, held-out evaluation, future-data perturbation, doubled costs and lookback stability retain separate results and computation identities. The older small proposal path remains available only when the design bridge is explicitly disabled.
 
 Evaluation separates a design interval from held-out history, calculates feasible long-only weights with cash and concentration bounds, and checks target support under normal and doubled costs. Signals at a close execute at a subsequent session, rather than trading retroactively at the price that generated them. The JavaScript audit checks candidate dimensions, units, limits and the derived decision independently. It is a second implementation of the boundary checks, not an independent audit organization or statistical certification.
 
@@ -30,7 +30,7 @@ The user's wallet connection is not approval, and approval is not Start. A provi
 
 ## 4. Execution plane
 
-The active controller accepts `NEW_CAPITAL` buy allocations. It asks existing StockMesh for a USDC-to-stock-token quote and a prepared transaction. Before the signer is reachable, the gate checks:
+The v2 controller accepts `NEW_CAPITAL` and `SELECTED_HOLDINGS_PLUS_NEW_CASH` allocations. It binds the agent wallet's actual holdings, puts sells before dependent buys, and asks StockMesh for exact held-mint liquidation or stock-purchase quotes. Before the signer is reachable, the gate checks:
 
 1. Approved plan, actor, wallet and product mint agree.
 2. Quote amount, one-product exposure and minimum output agree.
@@ -60,7 +60,7 @@ A finalized success must match the exact signed wire, expected signature and fee
 
 ## 6. Two chains, one explicit trust boundary
 
-The 616-byte devnet policy account records owner, verifier, agent wallet, approval identity, budget, count, mint list and pending state. Instructions initialize, reserve, settle and revoke. Reinitializing an existing PDA cannot reset its counters. A pending reservation blocks the next one. The verifier signs reservations and attestations; the owner controls initialization and revocation.
+The 616-byte devnet policy account records owner, verifier, agent wallet, approval identity, budget, count and pending state. V1 contains eight inline mints. V2 replaces that list with a domain-separated ordered Merkle root covering up to 128 exact trade legs and 64 distinct stock mints. Each proof binds index, BUY/SELL side, mint, input quantity and minimum sale proceeds. SELL token quantities never increment the USDC reservation. Instructions initialize, reserve, settle and revoke. Reinitializing a PDA cannot reset counters. The verifier signs reservations and attestations; the owner controls initialization and revocation. See the evidence ledger for which version is deployed.
 
 There is **no mainnet light client or cross-chain enforcement proof** in this program. Devnet cannot prevent a compromised authorized mainnet signer from spending. The isolated gate consumes its state and enforces the policy operationally. Settlement is an attestation about a mainnet observation, not a program independently replaying mainnet.
 

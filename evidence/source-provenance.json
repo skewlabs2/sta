@@ -10,8 +10,10 @@
       "observedSourceMtime": "2026-09-29T11:56:05+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "3e76832a5c3c1c4ead5da19466ec290412b72343e4ef243dee5c39773c2204c7",
-      "publicationSha256": "3e76832a5c3c1c4ead5da19466ec290412b72343e4ef243dee5c39773c2204c7",
-      "modifiedForPublication": false
+      "publicationSha256": "5a77275dec8e41d9750422208c08b60394066c2162734a71f0e1b67b830819e5",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "3e76832a5c3c1c4ead5da19466ec290412b72343e4ef243dee5c39773c2204c7",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "agent/tests/core/conftest.py",
@@ -595,8 +597,10 @@
       "observedSourceMtime": "2026-09-29T12:56:44.734758+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "86e9427d2c880ee4c3da0b6dcc62dcf2cb8bd837dd25c1a7642cf3c585fc4e7a",
-      "publicationSha256": "cc377f2e8767fa0e1270e3a034f425d8e8929917f37cdd232746d2cdbcd30041",
-      "modifiedForPublication": true
+      "publicationSha256": "230543e710be779735025ab395e1f3e10d8171bbe67224252ced99b2f89486e0",
+      "modifiedForPublication": true,
+      "initialPublicationSha256": "cc377f2e8767fa0e1270e3a034f425d8e8929917f37cdd232746d2cdbcd30041",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "compute/test_evaluate.py",
@@ -640,8 +644,10 @@
       "observedSourceMtime": "2026-09-29T19:57:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "d5c58c6348ea54e1bd490eb9fc54e7b9530e85733289aba03584a96d1a5efa32",
-      "publicationSha256": "d5c58c6348ea54e1bd490eb9fc54e7b9530e85733289aba03584a96d1a5efa32",
-      "modifiedForPublication": false
+      "publicationSha256": "5e8b9f690e01daea555023aeac0ed48acf2a5bf5cb94a4c8850924c91dc201a5",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "d5c58c6348ea54e1bd490eb9fc54e7b9530e85733289aba03584a96d1a5efa32",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-anchor.mjs",
@@ -658,8 +664,10 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "8f86f972ad85bb6a84dfbf55260f1df11a97fa83cd3c4235df829d0db599ac87",
-      "publicationSha256": "8f86f972ad85bb6a84dfbf55260f1df11a97fa83cd3c4235df829d0db599ac87",
-      "modifiedForPublication": false
+      "publicationSha256": "107f8cd56bf25fa0857ccc784bf1b353957c08693e0c72417eb677f5a8520c44",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "8f86f972ad85bb6a84dfbf55260f1df11a97fa83cd3c4235df829d0db599ac87",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-autonomy-devnet.mjs",
@@ -667,8 +675,10 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "a693adc60de1c9dce62018c5d03543230ed5aecc00e7b6dadfb670e637a7b0de",
-      "publicationSha256": "a693adc60de1c9dce62018c5d03543230ed5aecc00e7b6dadfb670e637a7b0de",
-      "modifiedForPublication": false
+      "publicationSha256": "c2c1bff067cd1fb2d2b0ef53455f916f43204a7e452bc2da4cdaa4f71dfdb18e",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "a693adc60de1c9dce62018c5d03543230ed5aecc00e7b6dadfb670e637a7b0de",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-autonomy-journal.mjs",
@@ -676,8 +686,10 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "cbc81493d8982d1a9376d2648317bd093e5e3ec326ae43d9df3dc2bfb384a685",
-      "publicationSha256": "cbc81493d8982d1a9376d2648317bd093e5e3ec326ae43d9df3dc2bfb384a685",
-      "modifiedForPublication": false
+      "publicationSha256": "51d5337f435379f605fc983d6265d0e5b8d5d12cf736926dece882f22b0333fd",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "cbc81493d8982d1a9376d2648317bd093e5e3ec326ae43d9df3dc2bfb384a685",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-autonomy-policy.mjs",
@@ -685,8 +697,10 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "beeb44136d07c2c8fb2e9f6f8254941a0c53ed622818be0885c3abbf57fc7a2a",
-      "publicationSha256": "beeb44136d07c2c8fb2e9f6f8254941a0c53ed622818be0885c3abbf57fc7a2a",
-      "modifiedForPublication": false
+      "publicationSha256": "d0d061e67f09efb6550538b2c9fdf225be65f1238c3b81013e994cce2508dc9d",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "beeb44136d07c2c8fb2e9f6f8254941a0c53ed622818be0885c3abbf57fc7a2a",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-autonomy-privy.mjs",
@@ -712,8 +726,10 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "01f2ddc22773f587add438680dbb777247031c75866e0e881e712fce85e63a02",
-      "publicationSha256": "01f2ddc22773f587add438680dbb777247031c75866e0e881e712fce85e63a02",
-      "modifiedForPublication": false
+      "publicationSha256": "8ac67a3921124536b633b316453ed14ccd7f8eda5b53b8e5efdd231baacdbc1c",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "01f2ddc22773f587add438680dbb777247031c75866e0e881e712fce85e63a02",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-autonomy-stockmesh.mjs",
@@ -721,8 +737,10 @@
       "observedSourceMtime": "2026-09-29T19:52:58+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "22a28d694ad5c75442040aa4714ea56a389cce7d249bb9cefc81fa54a054cbaf",
-      "publicationSha256": "22a28d694ad5c75442040aa4714ea56a389cce7d249bb9cefc81fa54a054cbaf",
-      "modifiedForPublication": false
+      "publicationSha256": "45055bdc66503a5a5f9935c69047379c62288996614d6b6f8a472604f00a8e38",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "22a28d694ad5c75442040aa4714ea56a389cce7d249bb9cefc81fa54a054cbaf",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-autonomy-wire.mjs",
@@ -730,8 +748,10 @@
       "observedSourceMtime": "2026-09-29T16:11:01+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "38d622bb5004fcc51c497e4dac9b88068f482749f50f1a5b6f9e54938b0da13f",
-      "publicationSha256": "38d622bb5004fcc51c497e4dac9b88068f482749f50f1a5b6f9e54938b0da13f",
-      "modifiedForPublication": false
+      "publicationSha256": "652342d1928a6e64ba21c0f72726d28c8144e22e2499682e2807d598ad7dad27",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "38d622bb5004fcc51c497e4dac9b88068f482749f50f1a5b6f9e54938b0da13f",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-data-availability.mjs",
@@ -766,8 +786,10 @@
       "observedSourceMtime": "2026-09-29T16:59:54+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "8e8aad8453d2dbff047d3182bddbdcfa1400bf53dc4cda4c0cc3550e2f578179",
-      "publicationSha256": "8e8aad8453d2dbff047d3182bddbdcfa1400bf53dc4cda4c0cc3550e2f578179",
-      "modifiedForPublication": false
+      "publicationSha256": "c9ea018d222a99005c8c48291743cc393f65d4ddfe6064112de9c008ca7749a7",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "8e8aad8453d2dbff047d3182bddbdcfa1400bf53dc4cda4c0cc3550e2f578179",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-kiln.mjs",
@@ -775,8 +797,10 @@
       "observedSourceMtime": "2026-09-29T18:56:53.481717+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "5d6a913525486f72020153d7727edf6af95321467717c57ccf51b325a364b65e",
-      "publicationSha256": "5d6a913525486f72020153d7727edf6af95321467717c57ccf51b325a364b65e",
-      "modifiedForPublication": false
+      "publicationSha256": "ba997b28098bf9692f1640bb5076b1ba074a06056cae4211fec86887a1ced99b",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "5d6a913525486f72020153d7727edf6af95321467717c57ccf51b325a364b65e",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-rebalance.mjs",
@@ -784,8 +808,10 @@
       "observedSourceMtime": "2026-09-29T13:43:45+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "0e994383245fef1fd29c081653d12c6f9a803e15a835b5cde07c326d0dc150a2",
-      "publicationSha256": "0e994383245fef1fd29c081653d12c6f9a803e15a835b5cde07c326d0dc150a2",
-      "modifiedForPublication": false
+      "publicationSha256": "056cde2bce15c547e88d5383f8ce709d1febbe1c3f79b9f5426b5b43d2ed1db7",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "0e994383245fef1fd29c081653d12c6f9a803e15a835b5cde07c326d0dc150a2",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-store.mjs",
@@ -793,8 +819,10 @@
       "observedSourceMtime": "2026-09-29T12:04:56+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "d57f3c56903381705e3abaf3a1a12b06d72f7841c22d168ee13e410fa5f82d6a",
-      "publicationSha256": "d57f3c56903381705e3abaf3a1a12b06d72f7841c22d168ee13e410fa5f82d6a",
-      "modifiedForPublication": false
+      "publicationSha256": "f434cbe5e9418c3d103a43474d982dd84d8351cf9f60a9946f3e42026566d223",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "d57f3c56903381705e3abaf3a1a12b06d72f7841c22d168ee13e410fa5f82d6a",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "lib/research-wallet-connection.mjs",
@@ -847,8 +875,10 @@
       "observedSourceMtime": "2026-09-29T16:18:56+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "fb7cfa1b60551be90ffdbc2cd4435e8afb486b558b4c10e91e3088f2d14572fa",
-      "publicationSha256": "98e34353194deea701c4463212378f09946c7ec4ab525b9d0c8b2b165758a92e",
-      "modifiedForPublication": true
+      "publicationSha256": "808301f004c7f1d223e491e39977e7c9c47fdb3ed4d97b2e23d1144d77643eb0",
+      "modifiedForPublication": true,
+      "initialPublicationSha256": "98e34353194deea701c4463212378f09946c7ec4ab525b9d0c8b2b165758a92e",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "programs/xtxc-demo-policy/src/lib.rs",
@@ -856,8 +886,10 @@
       "observedSourceMtime": "2026-09-29T16:07:15+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "943f32cda526cca5ed389abbe55373ece7e0fe6eefed0c6efa9a753752414974",
-      "publicationSha256": "943f32cda526cca5ed389abbe55373ece7e0fe6eefed0c6efa9a753752414974",
-      "modifiedForPublication": false
+      "publicationSha256": "8fb8fc6b6be8311d2d6dc4495091fc2b71faec4b5e70f18c131611d2ac19f420",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "943f32cda526cca5ed389abbe55373ece7e0fe6eefed0c6efa9a753752414974",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "scripts/research-agent-evidence.mjs",
@@ -874,8 +906,10 @@
       "observedSourceMtime": "2026-09-29T18:56:53.482717+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "718abd384ea5724a5fe7a5a6c55bac39cc50648b5921ab73f6a0f6f48c460e55",
-      "publicationSha256": "718abd384ea5724a5fe7a5a6c55bac39cc50648b5921ab73f6a0f6f48c460e55",
-      "modifiedForPublication": false
+      "publicationSha256": "a2f45d8f987d88c3a82a93e7328e53402abc5e851202c8cbf901eb7dcbec2252",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "718abd384ea5724a5fe7a5a6c55bac39cc50648b5921ab73f6a0f6f48c460e55",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "scripts/research-autonomy-service.mjs",
@@ -901,8 +935,10 @@
       "observedSourceMtime": "2026-09-29T19:47:46+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "1c2b9369a6d7ec6abec69fd601f5a3d35b13ffa3168876a795746698ab942826",
-      "publicationSha256": "1c2b9369a6d7ec6abec69fd601f5a3d35b13ffa3168876a795746698ab942826",
-      "modifiedForPublication": false
+      "publicationSha256": "bc377cb6da2ba89838c3354ea2308f0b9f11a43984d0b3aa5d142c2989e25803",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "1c2b9369a6d7ec6abec69fd601f5a3d35b13ffa3168876a795746698ab942826",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "tests/research-anchor.test.mjs",
@@ -919,8 +955,10 @@
       "observedSourceMtime": "2026-09-29T19:47:46+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "77ad65732138af0398b190b2a8b159ee0fab6a8e84ca43df3d0961543376a66e",
-      "publicationSha256": "77ad65732138af0398b190b2a8b159ee0fab6a8e84ca43df3d0961543376a66e",
-      "modifiedForPublication": false
+      "publicationSha256": "5ab088831a89cdaf352164b733ec923835c874cb00fba482825db0171a16714a",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "77ad65732138af0398b190b2a8b159ee0fab6a8e84ca43df3d0961543376a66e",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "tests/research-autonomy-devnet.test.mjs",
@@ -946,8 +984,10 @@
       "observedSourceMtime": "2026-09-29T20:02:53+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "cf37f5dc3c0ae29e50e7ff6db08587c5216442c2973b140284ae2ca0011c707e",
-      "publicationSha256": "cf37f5dc3c0ae29e50e7ff6db08587c5216442c2973b140284ae2ca0011c707e",
-      "modifiedForPublication": false
+      "publicationSha256": "3de2f2303e39f4107d86a496c9b306308f2833f3a04d1488a82d0ad00e2ab70e",
+      "modifiedForPublication": false,
+      "initialPublicationSha256": "cf37f5dc3c0ae29e50e7ff6db08587c5216442c2973b140284ae2ca0011c707e",
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
     },
     {
       "path": "tests/research-data-availability.test.mjs",

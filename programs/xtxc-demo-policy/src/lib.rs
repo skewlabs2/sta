@@ -12,6 +12,7 @@ solana_program::entrypoint!(process_instruction);
 pub const LEN: usize = 616;
 pub const SEED: &[u8] = b"xtxc-demo-policy1";
 pub const TAG: &[u8;8] = b"XTXCDMP1";
+pub const TAG2: &[u8;8] = b"XTXCDMP2";
 pub const INVALID:u32=8101;
 pub const AUTH:u32=8102;
 pub const INACTIVE:u32=8103;
@@ -23,12 +24,13 @@ pub fn num(d:&[u8],p:usize)->Result<u64,ProgramError>{Ok(u64::from_le_bytes(d.ge
 fn key(d:&[u8],p:usize)->Result<Pubkey,ProgramError>{Ok(Pubkey::new_from_array(d.get(p..p+32).ok_or(ProgramError::InvalidInstructionData)?.try_into().map_err(|_|ProgramError::InvalidInstructionData)?))}
 fn put(d:&mut[u8],p:usize,n:u64){d[p..p+8].copy_from_slice(&n.to_le_bytes())}
 pub fn validate(d:&[u8])->ProgramResult{
-    need(d.len()==LEN && &d[..8]==TAG,INVALID)?;
+    need(d.len()==LEN && (&d[..8]==TAG || &d[..8]==TAG2),INVALID)?;
+    let v2=&d[..8]==TAG2;
     need(key(d,8)?!=Pubkey::default() && key(d,40)?!=Pubkey::default() && key(d,72)?!=Pubkey::default() && key(d,8)?!=key(d,40)?,INVALID)?;
-    need(d[104..136]!=[0;32] && d[136..168]!=[0;32] && (1..=8).contains(&d[226]),INVALID)?;
-    need(num(d,184)?>0 && num(d,192)?<=num(d,184)? && num(d,208)?>0 && num(d,200)?<=num(d,208)?,INVALID)?;
-    need(num(d,216)?>0 && num(d,216)?<=num(d,184)? && (num(d,176)?==0 || num(d,176)?>num(d,168)?) && d[224]<=1 && d[225]<=1 && d[336]<=2,INVALID)?;
-    need(d[228..232]==[0;4] && d[337..344]==[0;7] && d[344+usize::from(d[226])*32..LEN].iter().all(|x|*x==0),INVALID)?;
+    need(d[104..136]!=[0;32] && d[136..168]!=[0;32] && if v2 {d[226]==0 && d[344..376]!=[0;32] && num(d,208)?<=128} else {(1..=8).contains(&d[226])},INVALID)?;
+    need((v2 || num(d,184)?>0) && num(d,192)?<=num(d,184)? && num(d,208)?>0 && num(d,200)?<=num(d,208)?,INVALID)?;
+    need((v2 || num(d,216)?>0) && num(d,216)?<=num(d,184)? && (num(d,176)?==0 || num(d,176)?>num(d,168)?) && d[224]<=1 && d[225]<=1 && d[336]<=2,INVALID)?;
+    need(d[228]<=if v2 {1} else {0} && d[229..232]==[0;3] && d[337..344]==[0;7] && d[if v2 {376} else {344+usize::from(d[226])*32}..LEN].iter().all(|x|*x==0),INVALID)?;
     for i in 0..usize::from(d[226]) {need(key(d,344+i*32)?!=Pubkey::default(),INVALID)?; for j in 0..i {need(key(d,344+i*32)?!=key(d,344+j*32)?,INVALID)?;}}
     Ok(())
 }
@@ -37,6 +39,7 @@ pub fn transition(d:&mut[u8],actor:&Pubkey,ix:&[u8],now:u64)->ProgramResult{
     validate(d)?;
     match ix.first().copied() {
         Some(1)=>{
+            need(&d[..8]==TAG,INVALID)?;
             need(ix.len()==81 && *actor==key(d,40)?,AUTH)?;
             need(d[225]==0 && now>=num(d,168)? && (num(d,176)?==0 || now<num(d,176)?),INACTIVE)?;
             need(d[224]==0,PENDING)?;
@@ -51,6 +54,32 @@ pub fn transition(d:&mut[u8],actor:&Pubkey,ix:&[u8],now:u64)->ProgramResult{
             put(d,192,reserved);put(d,200,count+1);put(d,264,amount);
             d[232..264].copy_from_slice(&ix[49..81]);d[272..304].copy_from_slice(&ix[17..49]);
             d[304..336].fill(0);d[224]=1;d[336]=0;
+        }
+        Some(5)=>{
+            need(&d[..8]==TAG2 && ix.len()>=91 && *actor==key(d,40)?,AUTH)?;
+            let depth=usize::from(ix[90]);
+            need(depth<=7 && ix.len()==91+32*depth && ix[81]<=1 && ix[49..81]!=[0;32],INVALID)?;
+            need(d[225]==0 && now>=num(d,168)? && (num(d,176)?==0 || now<num(d,176)?),INACTIVE)?;
+            need(d[224]==0,PENDING)?;
+            let count=num(d,200)?;let amount=num(ix,9)?;
+            need(num(ix,1)?==count,REPLAY)?;need(count<num(d,208)?,BUDGET)?;
+            need(amount>0 && key(ix,17)?!=Pubkey::default(),INVALID)?;
+            let sell=ix[81]==1;let minimum=num(ix,82)?;
+            need(if sell {minimum>0} else {minimum==0 && amount<=num(d,216)?},BUDGET)?;
+            let mut h=solana_program::hash::hashv(&[b"STA:trade:v2",&ix[1..9],&ix[81..82],&ix[17..49],&ix[9..17],&ix[82..90]]).to_bytes();
+            let mut position=count;let mut width=num(d,208)?;let mut expected_depth=0;
+            while width>1 {width=(width+1)/2;expected_depth+=1;}
+            need(depth==expected_depth,INVALID)?;
+            for sibling in ix[91..].chunks_exact(32){
+                h=if position&1==0 {solana_program::hash::hashv(&[b"STA:branch:v2",&h,sibling])} else {solana_program::hash::hashv(&[b"STA:branch:v2",sibling,&h])}.to_bytes();
+                position>>=1;
+            }
+            need(d[344..376]==h,INVALID)?;
+            let reserved=num(d,192)?.checked_add(if sell {0} else {amount}).ok_or(ProgramError::ArithmeticOverflow)?;
+            need(reserved<=num(d,184)?,BUDGET)?;
+            put(d,192,reserved);put(d,200,count+1);put(d,264,amount);
+            d[232..264].copy_from_slice(&ix[49..81]);d[272..304].copy_from_slice(&ix[17..49]);
+            d[304..336].fill(0);d[224]=1;d[228]=ix[81];d[336]=0;
         }
         Some(2)=>{
             need(ix.len()==66 && *actor==key(d,40)?,AUTH)?;
@@ -69,16 +98,19 @@ pub fn process_instruction(program:&Pubkey,accounts:&[AccountInfo],ix:&[u8])->Pr
     need(accounts.len()>=2,INVALID)?;
     let actor=&accounts[0];let state=&accounts[1];
     need(actor.is_signer && state.is_writable && actor.key!=state.key,AUTH)?;
-    if ix.first()==Some(&0) {
-        need(accounts.len()==3 && ix.len()>=202 && ix[169]>=1 && ix[169]<=8 && ix.len()==170+usize::from(ix[169])*32,INVALID)?;
+    if ix.first()==Some(&0) || ix.first()==Some(&4) {
+        let v2=ix[0]==4;
+        need(accounts.len()==3 && if v2 {ix.len()==201} else {ix.len()>=202 && ix[169]>=1 && ix[169]<=8 && ix.len()==170+usize::from(ix[169])*32},INVALID)?;
         need(actor.is_writable && accounts[2].key==&system_program::id() && state.owner==&system_program::id() && state.data_is_empty(),INVALID)?;
         let (pda,bump)=Pubkey::find_program_address(&[SEED,actor.key.as_ref(),&ix[65..97]],program);
         need(state.key==&pda,INVALID)?;
-        let mut d=vec![0u8;LEN];d[..8].copy_from_slice(TAG);d[8..40].copy_from_slice(actor.key.as_ref());
+        let mut d=vec![0u8;LEN];d[..8].copy_from_slice(if v2 {TAG2} else {TAG});d[8..40].copy_from_slice(actor.key.as_ref());
         d[40..168].copy_from_slice(&ix[1..129]);d[168..184].copy_from_slice(&ix[129..145]);
         d[184..192].copy_from_slice(&ix[145..153]);d[216..224].copy_from_slice(&ix[153..161]);
         d[208..216].copy_from_slice(&ix[161..169]);
-        d[226]=ix[169];d[227]=bump;d[344..344+usize::from(ix[169])*32].copy_from_slice(&ix[170..]);validate(&d)?;
+        d[227]=bump;
+        if v2 {d[344..376].copy_from_slice(&ix[169..201]);} else {d[226]=ix[169];d[344..344+usize::from(ix[169])*32].copy_from_slice(&ix[170..]);}
+        validate(&d)?;
         // No account close/reset instruction. Reusing this PDA cannot reset its
         // budget. The signing gateway separately rejects a devnet reset.
         invoke_signed(&system_instruction::create_account(actor.key,state.key,Rent::get()?.minimum_balance(LEN),LEN as u64,program),

@@ -13,6 +13,7 @@ The harness at `programs/xtxc-demo-policy/proof` runs the compiled policy in Mol
 ```sh
 mkdir -p .local/svm/sbf .local/svm/evidence
 cargo build-sbf --manifest-path programs/xtxc-demo-policy/Cargo.toml --sbf-out-dir .local/svm/sbf
+STA_SVM_ROOT="$PWD/.local/svm" node scripts/policy-v2-vectors.mjs
 STA_SVM_ROOT="$PWD/.local/svm" cargo run --locked --manifest-path programs/xtxc-demo-policy/proof/Cargo.toml
 ```
 

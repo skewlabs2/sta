@@ -7,8 +7,8 @@ import { kilnProposal, AgentUnavailable } from '../lib/research-kiln.mjs';
 export function evaluate(input,inspect=false,signal) {
   return new Promise((resolve,reject)=>{
     const child=spawn(process.env.XTXC_RESEARCH_PYTHON,[process.env.XTXC_RESEARCH_EVALUATOR,...(inspect?['--inspect']:[])],{
-      env:{PATH:'/usr/bin:/bin',PYTHONPATH:process.env.XTXC_RESEARCH_PYTHONPATH,PYTHONDONTWRITEBYTECODE:'1',OPENBLAS_NUM_THREADS:'1',OMP_NUM_THREADS:'1',XTXC_RESEARCH_DATA_ROOT:process.env.XTXC_RESEARCH_DATA_ROOT},
-      stdio:['pipe','pipe','pipe'],signal,timeout:120000,killSignal:'SIGKILL'});
+      env:{PATH:'/usr/bin:/bin',PYTHONPATH:process.env.XTXC_RESEARCH_PYTHONPATH,PYTHONDONTWRITEBYTECODE:'1',OPENBLAS_NUM_THREADS:'1',OMP_NUM_THREADS:'1',XTXC_RESEARCH_DATA_ROOT:process.env.XTXC_RESEARCH_DATA_ROOT,XTXC_CATALOG_REPORT:process.env.XTXC_CATALOG_REPORT,XTXC_RESEARCH_DESIGNS:process.env.XTXC_RESEARCH_DESIGNS,TMPDIR:process.env.XTXC_RESEARCH_TMPDIR||'/tmp'},
+      stdio:['pipe','pipe','pipe'],signal,timeout:240000,killSignal:'SIGKILL'});
     let out='',size=0;
     child.stdout.on('data',data=>{size+=data.length;if(size>2000000){child.kill('SIGKILL');return;}out+=data;});
     child.stderr.resume(); // Error messages from data libraries are not user-visible logs.
@@ -25,12 +25,12 @@ export async function processRun(store,run,config) {
     else store.db.prepare('UPDATE agent_runs SET lease_until=? WHERE id=? AND lease_token=?').run(Date.now()+300000,run.id,run.leaseToken);
   },5000);
   try{
-    await evaluate(run.input,true,abort.signal);
-    const model=await kilnProposal(run.input,config,store);
+    const inspected=await evaluate(run.input,true,abort.signal);
+    const model=await kilnProposal(run.input,config,store,fetch,inspected.designMessages??null);
     if(abort.signal.aborted)return;
     const result=await evaluate({...run.input,proposal:model.proposal},false,abort.signal);
     result.model=model.trace;result.proposal=model.proposal;
-    result.engineVersion='xtxc-pinned-backtest-20260929';
+    result.engineVersion=result.engineVersion??'xtxc-pinned-backtest-20260929';
     store.finish(run,result.decision,result);
   }catch(e){if(!abort.signal.aborted)store.finish(run,e.stage??'FAILED',null,e.message?.slice(0,350)??'Research failed.');}
   finally{clearInterval(timer);}

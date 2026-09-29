@@ -92,9 +92,12 @@ def assess(result, goal):
         'sharpe':None if np.std(r,ddof=1)==0 else round(float(np.mean(r)/np.std(r,ddof=1)*math.sqrt(252)),3)}
 
 def evaluate(request, root):
+    if request.get('proposal',{}).get('designs') is not None:
+        from design_bridge import evaluate_designs
+        return evaluate_designs(request, root)
     strategy,goal,proposal=request['strategy'],request['goal'],request['proposal']
     tickers=strategy['instruments']
-    if not 1<=len(tickers)<=16: raise ValueError('Invalid universe.')
+    if not 1<=len(tickers)<=64: raise ValueError('Invalid universe.')
     prices,snapshot=load_prices(root,sorted(set(tickers+['QQQ'])))
     h=max(5,round(goal['horizonDays']*252/365))
     required=max(756,3*h+379)
@@ -135,9 +138,12 @@ if __name__=='__main__':
         if '--inspect' in sys.argv:
             prices,snapshot=load_prices(os.environ['XTXC_RESEARCH_DATA_ROOT'], sorted(set(request['strategy']['instruments']+['QQQ'])))
             result={'dataset':snapshot,'rows':len(prices)}
+            if os.environ.get('XTXC_RESEARCH_DESIGNS')=='1':
+                from design_bridge import prompt
+                result['designMessages']=prompt(request)
         else: result=evaluate(request,os.environ['XTXC_RESEARCH_DATA_ROOT'])
         print(json.dumps(result,allow_nan=False,separators=(',',':')))
     except Exception as e:
         # No traceback, path, key or raw data in the user response.
-        message=str(e) if isinstance(e,ValueError) else 'WAITING_DATA: Price release could not be read.'
+        message=str(e) if isinstance(e,ValueError) else ('WAITING_DATA: Price release could not be read.' if isinstance(e, (FileNotFoundError, PermissionError, gzip.BadGzipFile)) else 'Research computation failed ('+type(e).__name__+').')
         print(json.dumps({'error':message[:350]}));sys.exit(2)
