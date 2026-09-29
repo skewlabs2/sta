@@ -136,8 +136,8 @@
       "observedSourceMtime": "2026-09-28T18:37:45+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "a39e0d158efc87f4bad631dd2652fa92f9dde075ff98a1e97e3bf7e22cc19730",
-      "publicationSha256": "a39e0d158efc87f4bad631dd2652fa92f9dde075ff98a1e97e3bf7e22cc19730",
-      "modifiedForPublication": false
+      "publicationSha256": "757953a5ce6be378faecf8030e1718e68d56bb8934bde4975073b292e7836c7c",
+      "modifiedForPublication": true
     },
     {
       "path": "agent/tests/research/test_research_evaluator.py",

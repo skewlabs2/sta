@@ -139,8 +139,23 @@ def _with_band(spec, band):
 def _assert_same_as_golden(res, g):
     assert hashlib.sha256(json.dumps(res["equity"]).encode()).hexdigest() == g["equity_sha256"]
     assert res["equity"][-1][1] == g["final"]
-    assert res["metrics"] == g["metrics"]
-    assert res["turnover"] == g["turnover"] and res["costs_paid"] == g["costs_paid"] and res["trades"] == g["trades"]
+    # Keep the entire published equity curve byte-exact above. Derived float64
+    # reductions can differ by a few ULPs across libm/CPU implementations; 1e-12
+    # is eight orders below one basis point, not an economic-error allowance.
+    assert res["metrics"] == pytest.approx(g["metrics"], rel=1e-12, abs=1e-12)
+    assert res["turnover"] == pytest.approx(g["turnover"], rel=1e-12, abs=1e-12)
+    assert res["costs_paid"] == pytest.approx(g["costs_paid"], rel=1e-12, abs=1e-12)
+    assert res["trades"] == g["trades"]
+
+
+def test_golden_tolerance_does_not_hide_an_economic_change():
+    g = GOLDEN["synthetic"]["equal_weight_weekly_100bps"]
+    res = bt.simulate(_with_band(g["spec"], 0), synthetic_prices(n_days=600), g["cost_model"])
+    # A one-basis-point summary error is still rejected, without needing a
+    # changed curve to catch it. Transaction counts stay exactly integral.
+    res["metrics"]["total_return"] += 0.0001
+    with pytest.raises(AssertionError):
+        _assert_same_as_golden(res, g)
 
 
 @pytest.mark.parametrize("name", sorted(GOLDEN["synthetic"]))

@@ -30,6 +30,8 @@ The public copy removes unreachable synthetic-price generation bodies, makes evi
 
 Added tests exhaust a 28,800-case policy grid, exercise 10,000 large-integer allocations, preserve a wallet fence across policy replacement and check approval digest sensitivity. These are deterministic property/contract checks, not a formal proof or live execution benchmark.
 
+Cross-host verification exposed a few-ULP difference in derived float64 metrics. Golden comparisons use a documented `1e-12` tolerance for those summaries; the full published equity-curve hash and execution atom arithmetic remain exact. A separate test ensures a one-basis-point error still fails.
+
 The on-chain Rust policy implementation is unchanged from the observed deployment source. The SVM harness only changes how its isolated artifact directory is selected. Public-copy changes were **not silently promoted to production**.
 
 ## Documentation references
