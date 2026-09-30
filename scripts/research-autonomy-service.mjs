@@ -47,6 +47,7 @@ const server=http.createServer(async(req,res)=>{
   else if(b.operation==='SUBMIT_APPROVAL')out=await control.submitApproval(b.owner,x.id,x.signedTransactionBase64);
   else if(b.operation==='START')out=await control.start(b.owner,x.id,x.approvalHash);
   else if(b.operation==='STOP')out=control.stop(b.owner,x.id);
+  else if(b.operation==='DISCARD_UNSIGNED_DRAFT')out=control.discardUnsignedDraft(b.owner,x.id);
   else if(b.operation==='STOP_ALL'){const rows=db.prepare("SELECT id FROM autonomy_bindings WHERE owner=? AND phase NOT IN ('STOPPED','COMPLETE')").all(b.owner);for(const row of rows)control.stop(b.owner,row.id);out={stopped:rows.length};}
   else if(b.operation==='STATUS')out=await control.status(b.owner,x.id,x.withHoldings===true);
   else throw Error('INVALID_OPERATION');
@@ -55,5 +56,5 @@ const server=http.createServer(async(req,res)=>{
 });
 server.requestTimeout=30000;server.headersTimeout=10000;
 server.listen(socket,()=>{chmodSync(socket,0o660);console.log('Autonomy gate ready. No policy starts without owner approval and Start.');});
-setInterval(async()=>{if(working)return;working=true;try{await control.tickNext();}catch{console.warn('Autonomy worker deferred; durable records retained.');}finally{working=false;}},2500);
+setInterval(async()=>{if(working)return;working=true;try{await control.tickNext();}catch{console.warn('Autonomy worker deferred; durable records retained.');}finally{working=false;}},1000);
 process.on('SIGTERM',()=>{server.close();setTimeout(()=>process.exit(0),20000).unref();});

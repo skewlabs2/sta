@@ -1,0 +1,33 @@
+{
+  "schema": "sta.demo-media/v1",
+  "recordedAt": "2026-09-30T00:56:11.020045+00:00",
+  "recordingStartedAtLocal": "2026-09-30T09:27:38+09:00",
+  "source": {
+    "durationSeconds": 273.363333,
+    "sha256": "a13e2f932df9098be755e90dcaa18ace3eb06fc87259e3d09e87bdb78cadb48a",
+    "published": false
+  },
+  "output": {
+    "name": "STA-Demo-2m56s-English.mp4",
+    "durationSeconds": 176.233333,
+    "bytes": 11989285,
+    "sha256": "a95884a28f4cd6c762dd41676e4ad6a7729e16612e7392e37133f807ef9177dc",
+    "width": 2880,
+    "height": 1800,
+    "fps": 30,
+    "url": "https://github.com/xtxctrade/sta/releases/download/demo-20260930/STA-Demo-2m56s-English.mp4"
+  },
+  "transform": {
+    "uniformSpeed": 1.55,
+    "cuts": false,
+    "reordered": false,
+    "sourceAudio": false,
+    "captionType": "English screen-action explanations"
+  },
+  "captions": {
+    "path": "docs/assets/STA-Demo-EN.srt",
+    "sha256": "28ba626e561b9c5f3fb1f8f33b7e260ea01522e6c8396ae5920c9debd60d391a",
+    "cues": 33
+  },
+  "scope": "Owner-recorded live workflow; not a real-time latency benchmark. Playback and encoder frame timing differ slightly from ideal duration/speed."
+}

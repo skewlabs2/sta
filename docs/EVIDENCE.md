@@ -4,7 +4,7 @@ An attractive result is not enough. A reviewer should be able to distinguish a m
 
 ## Reproduced publication checks
 
-The machine-readable result is [verification.json](../evidence/verification.json). It records suite counts and hashes of raw local test outputs. The tests run in an isolated workspace on the existing Linux host; JavaScript/Python execution has no network namespace access. This run does not spend tokens, contact a signer or send a transaction.
+The current machine-readable result is [verification-20260930-final.json](../evidence/verification-20260930-final.json); [verification.json](../evidence/verification.json) preserves the initial publication run. They record suite counts and hashes of retained remote test outputs. Checks run in an isolated workspace on the existing Linux host with network-isolated execution. They do not spend tokens, contact a signer or send a transaction.
 
 The publication adversarial suite covers:
 
@@ -46,13 +46,27 @@ The new approval/holdings UI and isolated signing service were [promoted togethe
 
 The public static-file mapping initially still pointed to the previous release. It now serves a union of both releases' immutable assets, preserving already-open tabs. Chrome subsequently restored the existing wallet session and saved research, and displayed all three actual PR7 candidates with their refusal reasons. This is UI/service evidence, not a wallet authorization or mainnet fill.
 
-## Live acceptance ledger
+## September 30 recorded execution
 
-1. A funded, approved autonomous mainnet order completing the entire STA path, with reconciled holdings and its final devnet result record. Existing manual XTXC trades are not substitute evidence.
-2. A second changed-condition autonomous trade and a refused request tied to a complete demonstration recording.
-3. V2 autonomous selling/rebalancing is implemented and exercised in contract tests; funded live acceptance is pending. Continuous discretionary portfolio management is a separate scope from an exact owner-approved allocation.
-4. External audit, adversarial multi-provider consensus verification, multi-host durability and production latency/energy measurements.
-5. Organizer acceptance of the observed Qwen model. The [published Challenge A brief](https://docs.google.com/document/d/13qh7oePGl7Flrl-Zh_A6hfr02L266PvS/edit) names `gpt-oss-120b`; the repository does not assert an approved substitution.
+The [2:56 recording and transaction index](DEMO.md) replace the earlier “autonomous mainnet acceptance pending” entry with **observed individual trades**, not an assertion that every allocation completed. The [machine-readable evidence](../evidence/demo-execution-20260930.json) joins each run → report → plan → owner-approved policy → order → mainnet fill → devnet result.
+
+At `2026-09-30T00:49:40.249Z`, read-only verification re-fetched three finalized mainnet transactions and eight finalized devnet transactions. Mainnet bytes matched the saved signed transaction, its signature and fee; token balances proved the exact debit and delivery. Devnet instruction bytes matched the expected approval, reserve or settle instruction, including its actor, message hash and receipt hash.
+
+| Recorded case | Observed result |
+| --- | --- |
+| 2 USDC, 5% target over one year, at least 50% cash | User approved and started a separate policy. JNJ bought for **0.3332 USDC**; 118,276 raw token atoms received. |
+| 1 USDC, 3% target over one year, at least 50% cash | Another policy approved without revoking the first. JNJ bought for **0.1666 USDC**, then QQQ for **0.1666 USDC**; 58,660 and 22,408 raw token atoms received. |
+| 1 USDC, 1,000% target over 30 days, maximum drawdown 1% | Kiln proposed candidates; PR7 declined both. No approved plan was created for this run. |
+
+The budgets above are **research portfolio budgets**, not claims that 2 USDC and 1 USDC were completely spent. Both plans retained a cash floor and three intended purchase legs. At observation, the first had one filled leg, the second two; both execution bindings were `ATTENTION` for remaining work. The research-facing states were `PARTIAL` and `UNKNOWN`. The three documented fills are finalized despite those allocation-level states. No unrelated historical manual-wallet trades are counted.
+
+All three recorded requests contain actual [Kiln usage and normalized designs](KILN_USAGE.md), including the refused target. Their total is 2,655 input and 2,113 output tokens. Exporting evidence made **zero model calls, signatures, submissions or database writes**.
+
+## What these observations do not establish
+
+V2 selling/rebalancing is implemented and exercised by contract tests; this recording demonstrates buys, not a funded autonomous sale. Continuous discretionary management is different from executing an exact owner-approved allocation. External audit, multi-host durability and production latency/energy measurements are not claimed. The recording is uniformly sped up 1.55× and cannot establish real-time end-to-end latency.
+
+The observed model is Qwen. The [published Challenge A brief](https://docs.google.com/document/d/13qh7oePGl7Flrl-Zh_A6hfr02L266PvS/edit) names `gpt-oss-120b`; the repository does not assert organizer approval of a substitution.
 
 ## Fast reviewer route
 

@@ -1,0 +1,323 @@
+{
+  "schema": "sta.demo-execution-observation/v1",
+  "observedAt": "2026-09-30T00:49:40.249Z",
+  "scope": "Three independently finalized autonomous BUY legs in two user-approved strategies; not completion of every planned allocation or evidence of autonomous live selling.",
+  "source": "Read-only research/control journals joined by run, report, plan, policy and order IDs; fresh finalized RPC observations compared to exact signed wire and policy instruction bytes.",
+  "policies": [
+    {
+      "id": "f31aad753ebcf30c2b0489c1c14aec0ef762508e1236f5d722dce36eec4c2c44",
+      "planId": "6915e06f9f72c986c3c7152ed3e573fb6fcfb30381dc8d39dda918a7b0308089",
+      "reportHash": "7bcc39d61424669c0d95bd7f3077882ff60eb1c006c04299d72c12fc879cec24",
+      "approvalHash": "1662046de2352348d4ca1e6dfcdb42ff310453b065abf790207be3dddc04fac1",
+      "wallet": "5iG16qv1xzgAc8sjK5vpguTQ4VKj5sFKoYxUnDyj6vQq",
+      "tradeRoot": "21eb840fcde53ba50665c51e90b18fefbfd88927232953fbe32f77b41c40e22d",
+      "buyBudgetAtoms": "999600",
+      "maxOrders": "3",
+      "phase": "ATTENTION",
+      "startedAt": "2026-09-30T00:28:46.922Z",
+      "approval": {
+        "signature": "RvjmYGGRyyNnW5aWDWUo6gvE2oJ1ppyBdeNZW7nbMP5wiTzmyihXRB171gHogSyhNxjDfT1Ckuo2iPGfHxAU6UE",
+        "cluster": "devnet",
+        "slot": 505717196,
+        "blockTime": 1790728122,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "APPROVE",
+        "actor": "94zxeCevvuEW5kT5hwxDqyyo1cGC4LSc5k3mQFM8xfbG",
+        "instructionSha256": "604bb124287de8cd6d65caeab96d58e7d402fce0b81c6b8bfc93384c3227e962",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/RvjmYGGRyyNnW5aWDWUo6gvE2oJ1ppyBdeNZW7nbMP5wiTzmyihXRB171gHogSyhNxjDfT1Ckuo2iPGfHxAU6UE?cluster=devnet"
+      }
+    },
+    {
+      "id": "5c8f408c4dadc03486862ef3d5684a9b2da1adddb1fc56e21b71f49c6bb16cad",
+      "planId": "924b3a417bd0d6e62c87998ce192cb015cee2175395315748bf95af4b329ba1d",
+      "reportHash": "1786ad8db04a49520180134bb71d3d43dee178b8bd67bbf3f5e84c08d2b626db",
+      "approvalHash": "d9cbf432335863cbd3ee481609fffb94c3eeae71159fa6609334b4b4d8b3a156",
+      "wallet": "5iG16qv1xzgAc8sjK5vpguTQ4VKj5sFKoYxUnDyj6vQq",
+      "tradeRoot": "c0ec5ea08fb1448f21de68bfc71b1225303d30e93dac4d611697c4f9152f4306",
+      "buyBudgetAtoms": "499800",
+      "maxOrders": "3",
+      "phase": "ATTENTION",
+      "startedAt": "2026-09-30T00:30:43.927Z",
+      "approval": {
+        "signature": "4wR3VBbV9yZYruqb1SNCH9LTtxUSgi5VmkjuoFwP9SfgnXKc3YJxZBkY6Dpfg7KAwiHwge8GxoDd5fXJiQZjnFYW",
+        "cluster": "devnet",
+        "slot": 505717706,
+        "blockTime": 1790728239,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "APPROVE",
+        "actor": "94zxeCevvuEW5kT5hwxDqyyo1cGC4LSc5k3mQFM8xfbG",
+        "instructionSha256": "1721945212df8934abf4b5ba31075aaa76b26d16f5034c8214809cf485f3fad0",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/4wR3VBbV9yZYruqb1SNCH9LTtxUSgi5VmkjuoFwP9SfgnXKc3YJxZBkY6Dpfg7KAwiHwge8GxoDd5fXJiQZjnFYW?cluster=devnet"
+      }
+    }
+  ],
+  "trades": [
+    {
+      "orderId": "eca6c4e9772af38af0fb788b4d2640bf4459ed73928bd5d9233ce25ada17d6ac",
+      "policyId": "f31aad753ebcf30c2b0489c1c14aec0ef762508e1236f5d722dce36eec4c2c44",
+      "planId": "6915e06f9f72c986c3c7152ed3e573fb6fcfb30381dc8d39dda918a7b0308089",
+      "runId": "b80ebab6-a955-4e1a-80bc-4c34409f1165",
+      "instrument": "JNJ",
+      "createdAt": "2026-09-30T00:28:50.936Z",
+      "side": "BUY",
+      "receipt": {
+        "signature": "2GVKRNAD37bWnUqb75XNPU48hFWpmRiASQzPSUXkVL5i7a7p1anRY3uRFQed3BCBrTd3Nj7MDuf8XeB86hQhwkvn",
+        "messageHash": "772f9106d77255a30cd3a7df212138102d8397c68bb79d6c779aa14edaabf5bc",
+        "genesisHash": "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+        "slot": 451803017,
+        "feeLamports": "5000",
+        "phase": "RECONCILED",
+        "inputAtoms": "333200",
+        "outputAtoms": "118276",
+        "mint": "XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn",
+        "side": "BUY",
+        "sourceMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "destinationMint": "XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn"
+      },
+      "receiptHash": "71fcddbdf69de9581fb7f51e887c0f5c06542bbdef6a0d6b70d3ce2ec56de2bd",
+      "exactSignedWireAndTokenDeliveryRechecked": true,
+      "engineReconciled": {
+        "preparedId": "stkp_ac988ca6dc05385ab6dc0cb3e34ebac5",
+        "signature": "2GVKRNAD37bWnUqb75XNPU48hFWpmRiASQzPSUXkVL5i7a7p1anRY3uRFQed3BCBrTd3Nj7MDuf8XeB86hQhwkvn",
+        "phase": "RECONCILED",
+        "at": 1790728146233
+      },
+      "mainnet": {
+        "signature": "2GVKRNAD37bWnUqb75XNPU48hFWpmRiASQzPSUXkVL5i7a7p1anRY3uRFQed3BCBrTd3Nj7MDuf8XeB86hQhwkvn",
+        "cluster": "mainnet-beta",
+        "finalized": true,
+        "err": null,
+        "blockTime": 1790728136,
+        "explorer": "https://solscan.io/tx/2GVKRNAD37bWnUqb75XNPU48hFWpmRiASQzPSUXkVL5i7a7p1anRY3uRFQed3BCBrTd3Nj7MDuf8XeB86hQhwkvn",
+        "tokenBalances": [
+          {
+            "role": "source",
+            "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "decimals": 6,
+            "preAtoms": "8666800",
+            "postAtoms": "8333600"
+          },
+          {
+            "role": "destination",
+            "mint": "XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn",
+            "decimals": 8,
+            "preAtoms": "119565",
+            "postAtoms": "237841"
+          }
+        ]
+      },
+      "reservation": {
+        "signature": "5tY6C4TWAJFGWs9ZLtw8xz3oetXNb8zW7BqPbMkXxeEjQ4SDEJYfySB2WAhh475bVMhtgiXnRtA1oQ5UdtWV1vui",
+        "cluster": "devnet",
+        "slot": 505717237,
+        "blockTime": 1790728131,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "RESERVE",
+        "actor": "CGCAEch5PuLc2TL5ecKW7AKJNT3fkxxNiBU8xZXJDv4",
+        "instructionSha256": "1cc960b25aa6fb53187b15dfb0b53379896011f663f1ae03217384e65a5578fc",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/5tY6C4TWAJFGWs9ZLtw8xz3oetXNb8zW7BqPbMkXxeEjQ4SDEJYfySB2WAhh475bVMhtgiXnRtA1oQ5UdtWV1vui?cluster=devnet"
+      },
+      "result": {
+        "signature": "Bo52ET8xK8oDuR5JjfMSWcLJs2gp3p4hJfXHjZxbQJRbDKaM5eMxrWzsHZVknGCi5pwT6nephF8NBopDt4iUQ71",
+        "cluster": "devnet",
+        "slot": 505717304,
+        "blockTime": 1790728147,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "SETTLE",
+        "actor": "CGCAEch5PuLc2TL5ecKW7AKJNT3fkxxNiBU8xZXJDv4",
+        "instructionSha256": "de9a1462cc848dbf592da55944cff56067a513dded328f6c65b968b1a0f7b3d2",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/Bo52ET8xK8oDuR5JjfMSWcLJs2gp3p4hJfXHjZxbQJRbDKaM5eMxrWzsHZVknGCi5pwT6nephF8NBopDt4iUQ71?cluster=devnet"
+      }
+    },
+    {
+      "orderId": "fc665b97b588e044bd2ee00e63f80396667c210aa113de698d1f534aae8d322c",
+      "policyId": "5c8f408c4dadc03486862ef3d5684a9b2da1adddb1fc56e21b71f49c6bb16cad",
+      "planId": "924b3a417bd0d6e62c87998ce192cb015cee2175395315748bf95af4b329ba1d",
+      "runId": "559e0598-6dcc-4a51-9448-1be5375d8e53",
+      "instrument": "JNJ",
+      "createdAt": "2026-09-30T00:30:46.815Z",
+      "side": "BUY",
+      "receipt": {
+        "signature": "55MNiRUqLqER4brGMyXbsSNci7UF3qqdfdEXzzYkBU1hGchsqB3Dy2W24KzrU6YcdvuBza2WQ77P6zXpoL7hB5JE",
+        "messageHash": "17f44b2bbabeabcb68dd91bcf8515daa419555723d76bec2cea1398279b231e4",
+        "genesisHash": "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+        "slot": 451803446,
+        "feeLamports": "5000",
+        "phase": "RECONCILED",
+        "inputAtoms": "166600",
+        "outputAtoms": "58660",
+        "mint": "XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn",
+        "side": "BUY",
+        "sourceMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "destinationMint": "XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn"
+      },
+      "receiptHash": "9aa62307ffd6bad14a2bbee0f8ffa0a2086c426cefe8b2efbd78caebd2b1e93d",
+      "exactSignedWireAndTokenDeliveryRechecked": true,
+      "engineReconciled": {
+        "preparedId": "stkp_9a293690146bb94fcd8e255008e26650",
+        "signature": "55MNiRUqLqER4brGMyXbsSNci7UF3qqdfdEXzzYkBU1hGchsqB3Dy2W24KzrU6YcdvuBza2WQ77P6zXpoL7hB5JE",
+        "phase": "RECONCILED",
+        "at": 1790728260040
+      },
+      "mainnet": {
+        "signature": "55MNiRUqLqER4brGMyXbsSNci7UF3qqdfdEXzzYkBU1hGchsqB3Dy2W24KzrU6YcdvuBza2WQ77P6zXpoL7hB5JE",
+        "cluster": "mainnet-beta",
+        "finalized": true,
+        "err": null,
+        "blockTime": 1790728250,
+        "explorer": "https://solscan.io/tx/55MNiRUqLqER4brGMyXbsSNci7UF3qqdfdEXzzYkBU1hGchsqB3Dy2W24KzrU6YcdvuBza2WQ77P6zXpoL7hB5JE",
+        "tokenBalances": [
+          {
+            "role": "source",
+            "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "decimals": 6,
+            "preAtoms": "8333600",
+            "postAtoms": "8167000"
+          },
+          {
+            "role": "destination",
+            "mint": "XsGVi5eo1Dh2zUpic4qACcjuWGjNv8GCt3dm5XcX6Dn",
+            "decimals": 8,
+            "preAtoms": "237841",
+            "postAtoms": "296501"
+          }
+        ]
+      },
+      "reservation": {
+        "signature": "3YDvRM7HxRc9K374tEYkiruEWq3ddBHgsYTZCESc3GRT3yj41Zayq2wL5fKEr5RcQXuPd2Zwm7V4nHNgezsSYR6a",
+        "cluster": "devnet",
+        "slot": 505717741,
+        "blockTime": 1790728247,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "RESERVE",
+        "actor": "CGCAEch5PuLc2TL5ecKW7AKJNT3fkxxNiBU8xZXJDv4",
+        "instructionSha256": "de9fa5ac36a50a8fc472abdf240eae57ef3ac51d4441c9a972ba3d3020120b5e",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/3YDvRM7HxRc9K374tEYkiruEWq3ddBHgsYTZCESc3GRT3yj41Zayq2wL5fKEr5RcQXuPd2Zwm7V4nHNgezsSYR6a?cluster=devnet"
+      },
+      "result": {
+        "signature": "4p5kcVjYT23s62wkF3BCtsYQdFEmCxQuKqLc3Gx7vHVBPsWo7pfd2Xk6pHhk5zya9U7uJCaeV3TK2kkidgbk3SLv",
+        "cluster": "devnet",
+        "slot": 505717798,
+        "blockTime": 1790728260,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "SETTLE",
+        "actor": "CGCAEch5PuLc2TL5ecKW7AKJNT3fkxxNiBU8xZXJDv4",
+        "instructionSha256": "6ff62ad9c4287a99af6f0359d3c1273f029ab0dfaec2b7c4360ca932fc6c397a",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/4p5kcVjYT23s62wkF3BCtsYQdFEmCxQuKqLc3Gx7vHVBPsWo7pfd2Xk6pHhk5zya9U7uJCaeV3TK2kkidgbk3SLv?cluster=devnet"
+      }
+    },
+    {
+      "orderId": "2715ba9fc8bbb1f80a926eeaff118a7cd88356cf163a57dcd2111c3a356af6e8",
+      "policyId": "5c8f408c4dadc03486862ef3d5684a9b2da1adddb1fc56e21b71f49c6bb16cad",
+      "planId": "924b3a417bd0d6e62c87998ce192cb015cee2175395315748bf95af4b329ba1d",
+      "runId": "559e0598-6dcc-4a51-9448-1be5375d8e53",
+      "instrument": "QQQ",
+      "createdAt": "2026-09-30T00:31:06.544Z",
+      "side": "BUY",
+      "receipt": {
+        "signature": "2qXcEoff9Gyk4M3sViQ2n5Ce6QseCFPUdi6SYo7ti9znytkmnsFYajkjoW8t3ckieNDH3uFpsA39vcborzCSESQS",
+        "messageHash": "96a42bb1d36533c40e7ffa46a26ee7f8b20e2f6ea94c744cb7501cd99210b3d6",
+        "genesisHash": "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+        "slot": 451803524,
+        "feeLamports": "5000",
+        "phase": "RECONCILED",
+        "inputAtoms": "166600",
+        "outputAtoms": "22408",
+        "mint": "Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ",
+        "side": "BUY",
+        "sourceMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "destinationMint": "Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ"
+      },
+      "receiptHash": "c8d3cd7fd95fc7de319755b4352f3b8e6ad25e5832baa40c7f4ae713c0b8a63c",
+      "exactSignedWireAndTokenDeliveryRechecked": true,
+      "engineReconciled": {
+        "preparedId": "stkp_ef7587658d9d8f039a39c42efc3afdd4",
+        "signature": "2qXcEoff9Gyk4M3sViQ2n5Ce6QseCFPUdi6SYo7ti9znytkmnsFYajkjoW8t3ckieNDH3uFpsA39vcborzCSESQS",
+        "phase": "RECONCILED",
+        "at": 1790728281227
+      },
+      "mainnet": {
+        "signature": "2qXcEoff9Gyk4M3sViQ2n5Ce6QseCFPUdi6SYo7ti9znytkmnsFYajkjoW8t3ckieNDH3uFpsA39vcborzCSESQS",
+        "cluster": "mainnet-beta",
+        "finalized": true,
+        "err": null,
+        "blockTime": 1790728270,
+        "explorer": "https://solscan.io/tx/2qXcEoff9Gyk4M3sViQ2n5Ce6QseCFPUdi6SYo7ti9znytkmnsFYajkjoW8t3ckieNDH3uFpsA39vcborzCSESQS",
+        "tokenBalances": [
+          {
+            "role": "source",
+            "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "decimals": 6,
+            "preAtoms": "8167000",
+            "postAtoms": "8000400"
+          },
+          {
+            "role": "destination",
+            "mint": "Xs8S1uUs1zvS2p7iwtsG3b6fkhpvmwz4GYU3gWAmWHZ",
+            "decimals": 8,
+            "preAtoms": "0",
+            "postAtoms": "22408"
+          }
+        ]
+      },
+      "reservation": {
+        "signature": "4MaU8HQxcKFJSWKVX8bj678HEec5vkJgr8dScJe7DhMiZtpRxT6tHFqxY8MMan5P1FZcJn69UZUu99U22eszbNFA",
+        "cluster": "devnet",
+        "slot": 505717826,
+        "blockTime": 1790728267,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "RESERVE",
+        "actor": "CGCAEch5PuLc2TL5ecKW7AKJNT3fkxxNiBU8xZXJDv4",
+        "instructionSha256": "8e0327603b9e667f93523c1e4fbbf29bb1755554739722919b5020734edee696",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/4MaU8HQxcKFJSWKVX8bj678HEec5vkJgr8dScJe7DhMiZtpRxT6tHFqxY8MMan5P1FZcJn69UZUu99U22eszbNFA?cluster=devnet"
+      },
+      "result": {
+        "signature": "4NY4hhLkJ99vY4K2fWASLNBi6vJDQsVu6Fr3ySPPL7NHtGuy4ytxhZyncSVPLXRVsa4VW8jMR7kMTy3NodHsNeVH",
+        "cluster": "devnet",
+        "slot": 505717891,
+        "blockTime": 1790728282,
+        "finalized": true,
+        "err": null,
+        "program": "3i5oG6xw28CTDHf4q49MRxkr6z3uzvMwhtf9FK5qH4pr",
+        "operation": "SETTLE",
+        "actor": "CGCAEch5PuLc2TL5ecKW7AKJNT3fkxxNiBU8xZXJDv4",
+        "instructionSha256": "c02d98736f25eab3558d1bf736d5f19ee9313ad8b29ef75778867c009501d8fd",
+        "exactInstructionMatched": true,
+        "explorer": "https://explorer.solana.com/tx/4NY4hhLkJ99vY4K2fWASLNBi6vJDQsVu6Fr3ySPPL7NHtGuy4ytxhZyncSVPLXRVsa4VW8jMR7kMTy3NodHsNeVH?cluster=devnet"
+      }
+    }
+  ],
+  "refusal": {
+    "runId": "284339f8-4ea2-4736-a009-39e1a2c10998",
+    "reportHash": "7735e6232e5e92127e67bb86195be6131b3003d56cc861879b9263065ce1040e",
+    "decision": "DECLINED",
+    "noApprovedPlan": true
+  },
+  "exportActions": {
+    "signaturesRequested": 0,
+    "mainnetSubmissions": 0,
+    "devnetSubmissions": 0,
+    "databaseWrites": 0
+  }
+}

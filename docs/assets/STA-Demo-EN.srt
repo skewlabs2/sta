@@ -1,0 +1,131 @@
+1
+00:00:00,000 --> 00:00:02,258
+STA | Stock Token Agent
+
+2
+00:00:02,258 --> 00:00:06,452
+Start with a budget and an investment goal.
+
+3
+00:00:06,452 --> 00:00:11,613
+2 USDC. A 5% annual target. At least 50% in cash.
+
+4
+00:00:11,613 --> 00:00:16,129
+The agent tests strategies against the requested risk limits.
+
+5
+00:00:16,129 --> 00:00:20,645
+Compare historical performance after trading costs.
+
+6
+00:00:20,645 --> 00:00:25,806
+Review the candidates before approving an allocation.
+
+7
+00:00:25,806 --> 00:00:30,323
+Choose the strategy and connect the agent wallet.
+
+8
+00:00:30,323 --> 00:00:38,065
+The user signs the strategy approval in their wallet.
+
+9
+00:00:38,065 --> 00:00:43,226
+The approval is recorded on Solana devnet.
+
+10
+00:00:43,226 --> 00:00:48,387
+Start the allocation. The agent handles the approved trades.
+
+11
+00:00:48,387 --> 00:00:52,903
+The submitted order is waiting for confirmation.
+
+12
+00:00:52,903 --> 00:00:56,129
+Inspect the on-chain verification record.
+
+13
+00:00:56,129 --> 00:01:01,290
+JNJ is settled. The receipt and updated holdings are visible.
+
+14
+00:01:01,290 --> 00:01:07,742
+Create another strategy without closing the first.
+
+15
+00:01:07,742 --> 00:01:14,194
+Describe the next investment in natural language.
+
+16
+00:01:14,194 --> 00:01:20,645
+This request is in Korean: 1 USDC, targeting 3% over one year.
+
+17
+00:01:20,645 --> 00:01:27,097
+Keep a cash reserve and set a maximum drawdown.
+
+18
+00:01:27,097 --> 00:01:32,903
+The new request becomes a separate research plan.
+
+19
+00:01:32,903 --> 00:01:38,710
+The agent backtests another set of candidate strategies.
+
+20
+00:01:38,710 --> 00:01:44,516
+Review returns, drawdown and trading costs together.
+
+21
+00:01:44,516 --> 00:01:49,677
+Approve the second allocation and review its stock purchases.
+
+22
+00:01:49,677 --> 00:01:54,194
+Sign this strategy approval in the wallet.
+
+23
+00:01:54,194 --> 00:01:58,710
+Record the approval, then start the new allocation.
+
+24
+00:01:58,710 --> 00:02:03,871
+The agent begins execution under the second approved plan.
+
+25
+00:02:03,871 --> 00:02:07,097
+Track the purchase as it moves toward confirmation.
+
+26
+00:02:07,097 --> 00:02:11,613
+Devnet verification and mainnet execution have separate receipts.
+
+27
+00:02:11,613 --> 00:02:18,710
+JNJ settles; the next order is tracked separately.
+
+28
+00:02:18,710 --> 00:02:25,161
+Now test an unrealistic target.
+
+29
+00:02:25,161 --> 00:02:32,903
+1 USDC. A 1,000% return in 30 days. Maximum loss: 1%.
+
+30
+00:02:32,903 --> 00:02:39,355
+The agent evaluates the request instead of promising a return.
+
+31
+00:02:39,355 --> 00:02:45,806
+Backtests check whether any strategy satisfies those limits.
+
+32
+00:02:45,806 --> 00:02:50,968
+Target not supported. The tested strategies do not qualify.
+
+33
+00:02:50,968 --> 00:02:56,363
+No new trade is approved. The evidence explains why.

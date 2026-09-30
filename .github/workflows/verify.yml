@@ -23,6 +23,7 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: pip install -r requirements.txt
       - run: npm run verify:bundle
+      - run: npm run verify:evidence
       - name: JavaScript tests without network access
         run: sudo unshare -n -- "$(command -v node)" --test tests/*.test.mjs
       - name: Research and local API tests without provider access

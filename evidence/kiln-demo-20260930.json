@@ -1,0 +1,722 @@
+{
+  "schema": "sta.kiln-demo-observation/v1",
+  "observedAt": "2026-09-30T00:49:40.249Z",
+  "provenance": "Allowlisted persisted production reports for the three recorded requests; no model replay during export.",
+  "apiOrigin": "https://api.bricksum.com/v1",
+  "endpoint": "/chat/completions",
+  "provider": "Bricksum Kiln",
+  "model": "qwen3-32b",
+  "attestation": "Application-recorded provider usage, not a provider-signed certificate. Provider request IDs and raw HTTP responses were not retained.",
+  "promptHashMeaning": "SHA-256 of canonical submitted messages; prompt bodies are private.",
+  "responseHashMeaning": "SHA-256 of the validated normalized proposal, not raw HTTP response bytes. Included proposals recompute exactly.",
+  "inferenceCalls": 3,
+  "totals": {
+    "inputTokens": 2655,
+    "outputTokens": 2113
+  },
+  "runs": [
+    {
+      "label": "2 USDC / 5% / one year",
+      "runId": "b80ebab6-a955-4e1a-80bc-4c34409f1165",
+      "strategyId": "5289132a-9371-4303-98d4-195afdef4852",
+      "status": "REVIEW",
+      "createdAt": "2026-09-30T00:27:51.115Z",
+      "updatedAt": "2026-09-30T00:28:11.679Z",
+      "goal": {
+        "targetReturnBps": 500,
+        "horizonDays": 365,
+        "maxDrawdownBps": 2000,
+        "maxWeightBps": 4000,
+        "minCashBps": 5000,
+        "costBps": 50
+      },
+      "engineVersion": "sta-pr07-dsl-bridge/1",
+      "computedAt": "2026-09-30T00:28:11.613153+00:00",
+      "reportHash": "7bcc39d61424669c0d95bd7f3077882ff60eb1c006c04299d72c12fc879cec24",
+      "reportHashRecomputed": true,
+      "dataset": {
+        "id": "c9fff0696aad292fa9cf1c0e00a162dc5cb1d67dbe7d0a17d4d6ca150c02caf2",
+        "releaseId": "9ca64ab12c8684ee3516646227a9fc942d91c3af40b5b747c5a13be34cba562e"
+      },
+      "model": {
+        "provider": "Bricksum Kiln",
+        "model": "qwen3-32b",
+        "inputTokens": 893,
+        "outputTokens": 687,
+        "latencyMs": 14856,
+        "promptHash": "4b11a3b53f85ae2d9e309bec3aebc8629df3d4f24f12b6bef5b474606c7214c8",
+        "responseHash": "043cbd533faaa9806c3c0a5574b9cc7d51b351a2dba184f4346171185da78c75"
+      },
+      "proposal": {
+        "rebalance": "monthly",
+        "designs": {
+          "candidates": [
+            {
+              "name": "ConservativeMomentum",
+              "idea": "This strategy uses long-term momentum to select stocks that have shown consistent upward movement, while avoiding volatile ones. It could fail during market-wide corrections or if momentum trends reverse abruptly.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "momentum",
+                    "lookback": 252,
+                    "skip": 0,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 63,
+                    "weight": -1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "trend",
+                    "lookback": 200,
+                    "rule": "above",
+                    "value": 0
+                  }
+                ],
+                "top_n": 3,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "SPY",
+                  "signal": "drawdown",
+                  "lookback": 63,
+                  "below": -0.1,
+                  "exposure": 0.5
+                }
+              }
+            },
+            {
+              "name": "QualityTrend",
+              "idea": "This strategy focuses on stocks with strong recent trends and low volatility, aiming for steady growth. It could underperform if market conditions shift to favor high-risk assets or during periods of low volatility.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "trend",
+                    "lookback": 126,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 63,
+                    "weight": -1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "sharpe",
+                    "lookback": 126,
+                    "rule": "above",
+                    "value": 0.5
+                  }
+                ],
+                "top_n": 2,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "QQQ",
+                  "signal": "trend",
+                  "lookback": 200,
+                  "below": 0,
+                  "exposure": 0.5
+                }
+              }
+            },
+            {
+              "name": "LowVolatilityGrowth",
+              "idea": "This strategy selects stocks with strong momentum and low volatility to balance growth and risk. It could struggle in a high-volatility environment or if low-volatility stocks underperform the broader market.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "momentum",
+                    "lookback": 126,
+                    "skip": 0,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 63,
+                    "weight": -1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "drawdown",
+                    "lookback": 63,
+                    "rule": "above",
+                    "value": -0.1
+                  }
+                ],
+                "top_n": 3,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "SPY",
+                  "signal": "drawdown",
+                  "lookback": 63,
+                  "below": -0.1,
+                  "exposure": 0.5
+                }
+              }
+            }
+          ]
+        }
+      },
+      "proposalHashRecomputed": true,
+      "candidates": [
+        {
+          "id": "c6cd48bf31cacbb306548c341f57046cb752ae9e99d9b9bfcdf6df46788678bc",
+          "name": "ConservativeMomentum",
+          "verdict": "ELIGIBLE",
+          "reasons": [],
+          "specHash": "baf0faa8906197713db376b4de6f80b60c16f5b3c7858c04fed376e058259b75",
+          "horizonMedianBps": 821,
+          "holdoutDrawdownBps": 1239,
+          "windowCount": 3,
+          "weights": [
+            {
+              "instrument": "JNJ",
+              "weightBps": 1666
+            },
+            {
+              "instrument": "SPY",
+              "weightBps": 1666
+            },
+            {
+              "instrument": "XOM",
+              "weightBps": 1666
+            }
+          ]
+        },
+        {
+          "id": "5ae7d2d1aa6876c59a2c1ad4b34a9c4cfe4e375dbe62e1cfa492057f6eef45a9",
+          "name": "QualityTrend",
+          "verdict": "DECLINED",
+          "reasons": [
+            "TARGET_NOT_SUPPORTED",
+            "NON_POSITIVE_HOLDOUT_RETURN",
+            "COST_STRESS_FAILED",
+            "DESIGN_STABILITY_NEEDS_REVIEW",
+            "NO_CURRENT_ALLOCATION"
+          ],
+          "specHash": "5abfa9aadabfb3266fbbc1d25d9c7840390af08ab5e7865bc8d91bf2d72cc0c2",
+          "horizonMedianBps": 0,
+          "holdoutDrawdownBps": 0,
+          "windowCount": 3,
+          "weights": []
+        },
+        {
+          "id": "d2231c5d231998d49a89a534e4c73efc9daeeac99e2b4f646924a6e9a3a8c739",
+          "name": "LowVolatilityGrowth",
+          "verdict": "ELIGIBLE",
+          "reasons": [],
+          "specHash": "b2bc894bffe646714850de3cfdace4ac75b0d99d12712b96867ed6f52034adb7",
+          "horizonMedianBps": 768,
+          "holdoutDrawdownBps": 920,
+          "windowCount": 3,
+          "weights": [
+            {
+              "instrument": "QQQ",
+              "weightBps": 1666
+            },
+            {
+              "instrument": "SPY",
+              "weightBps": 1666
+            },
+            {
+              "instrument": "VTI",
+              "weightBps": 1666
+            }
+          ]
+        }
+      ],
+      "decision": "REVIEW",
+      "plans": [
+        {
+          "id": "6915e06f9f72c986c3c7152ed3e573fb6fcfb30381dc8d39dda918a7b0308089",
+          "planStatus": "PARTIAL",
+          "bindingPhase": "ATTENTION",
+          "error": "DEVNET_CONFIRMATION_PENDING",
+          "budgetAtoms": "2000000",
+          "cashAtoms": "1000400",
+          "plannedLegs": [
+            {
+              "side": "BUY",
+              "inputDecimals": 6,
+              "instrument": "JNJ",
+              "inputAtoms": "333200"
+            },
+            {
+              "side": "BUY",
+              "inputDecimals": 6,
+              "instrument": "SPY",
+              "inputAtoms": "333200"
+            },
+            {
+              "side": "BUY",
+              "inputDecimals": 6,
+              "instrument": "XOM",
+              "inputAtoms": "333200"
+            }
+          ],
+          "policyId": "f31aad753ebcf30c2b0489c1c14aec0ef762508e1236f5d722dce36eec4c2c44",
+          "approvalHash": "1662046de2352348d4ca1e6dfcdb42ff310453b065abf790207be3dddc04fac1",
+          "ordersObserved": 1,
+          "filledLegsObserved": 1
+        }
+      ]
+    },
+    {
+      "label": "1 USDC / 3% / one year",
+      "runId": "559e0598-6dcc-4a51-9448-1be5375d8e53",
+      "strategyId": "c771ace7-0d3b-4101-8c8b-24b17c5c3cba",
+      "status": "REVIEW",
+      "createdAt": "2026-09-30T00:30:01.333Z",
+      "updatedAt": "2026-09-30T00:30:18.520Z",
+      "goal": {
+        "targetReturnBps": 300,
+        "horizonDays": 365,
+        "maxDrawdownBps": 2000,
+        "maxWeightBps": 4000,
+        "minCashBps": 5000,
+        "costBps": 50
+      },
+      "engineVersion": "sta-pr07-dsl-bridge/1",
+      "computedAt": "2026-09-30T00:30:18.467640+00:00",
+      "reportHash": "1786ad8db04a49520180134bb71d3d43dee178b8bd67bbf3f5e84c08d2b626db",
+      "reportHashRecomputed": true,
+      "dataset": {
+        "id": "c9fff0696aad292fa9cf1c0e00a162dc5cb1d67dbe7d0a17d4d6ca150c02caf2",
+        "releaseId": "9ca64ab12c8684ee3516646227a9fc942d91c3af40b5b747c5a13be34cba562e"
+      },
+      "model": {
+        "provider": "Bricksum Kiln",
+        "model": "qwen3-32b",
+        "inputTokens": 886,
+        "outputTokens": 684,
+        "latencyMs": 9623,
+        "promptHash": "74fd1d635571f6b651a56bc4ae27ab3514f6ca0453ce16d9894330fb038ca8d7",
+        "responseHash": "2741168fc25961694a658f6c5ac39b1fbd6d0f73f330d54122c947827cf6c4bc"
+      },
+      "proposal": {
+        "rebalance": "monthly",
+        "designs": {
+          "candidates": [
+            {
+              "name": "ConservativeMomentum",
+              "idea": "This strategy uses long-term momentum to select stocks that have shown consistent upward movement, while filtering out highly volatile ones. It could fail during sudden market corrections or if momentum trends reverse.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "momentum",
+                    "lookback": 252,
+                    "skip": 0,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 63,
+                    "weight": -0.5
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "trend",
+                    "lookback": 200,
+                    "rule": "above",
+                    "value": 0
+                  }
+                ],
+                "top_n": 3,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "SPY",
+                  "signal": "drawdown",
+                  "lookback": 63,
+                  "below": -0.1,
+                  "exposure": 0.5
+                }
+              }
+            },
+            {
+              "name": "QualityGrowth",
+              "idea": "This strategy focuses on stocks with strong recent growth in price and low volatility, aiming to capture stable performers. It could underperform if market conditions favor high-risk, high-reward assets.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "momentum",
+                    "lookback": 63,
+                    "skip": 0,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 63,
+                    "weight": -1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "sharpe",
+                    "lookback": 126,
+                    "rule": "above",
+                    "value": 0.5
+                  }
+                ],
+                "top_n": 2,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "QQQ",
+                  "signal": "trend",
+                  "lookback": 126,
+                  "below": 0,
+                  "exposure": 0.3
+                }
+              }
+            },
+            {
+              "name": "BalancedTrend",
+              "idea": "This strategy combines trend-following with volatility control to balance growth and risk. It may struggle during choppy or sideways markets where clear trends are absent.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "trend",
+                    "lookback": 126,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 63,
+                    "weight": -0.75
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "drawdown",
+                    "lookback": 63,
+                    "rule": "above",
+                    "value": -0.1
+                  }
+                ],
+                "top_n": 3,
+                "weighting": "inverse_volatility",
+                "risk_off": {
+                  "ticker": "SPY",
+                  "signal": "drawdown",
+                  "lookback": 63,
+                  "below": -0.15,
+                  "exposure": 0.4
+                }
+              }
+            }
+          ]
+        }
+      },
+      "proposalHashRecomputed": true,
+      "candidates": [
+        {
+          "id": "d179239ac82b615c9b64b836fc0d56de777d719f815da647ea302036c1526c69",
+          "name": "ConservativeMomentum",
+          "verdict": "ELIGIBLE",
+          "reasons": [],
+          "specHash": "d2332e5daa15db0be86982330ee41f80571ee3dfb369229d54cb97a825fc79f2",
+          "horizonMedianBps": 1037,
+          "holdoutDrawdownBps": 1461,
+          "windowCount": 3,
+          "weights": [
+            {
+              "instrument": "JNJ",
+              "weightBps": 1666
+            },
+            {
+              "instrument": "QQQ",
+              "weightBps": 1666
+            },
+            {
+              "instrument": "XOM",
+              "weightBps": 1666
+            }
+          ]
+        },
+        {
+          "id": "bd2621f755043bb902ecef709c6cce267ae6d8fc5822ff2a7460ff31d8ee899e",
+          "name": "QualityGrowth",
+          "verdict": "DECLINED",
+          "reasons": [
+            "TARGET_NOT_SUPPORTED",
+            "NON_POSITIVE_HOLDOUT_RETURN",
+            "COST_STRESS_FAILED",
+            "DESIGN_STABILITY_NEEDS_REVIEW",
+            "NO_CURRENT_ALLOCATION"
+          ],
+          "specHash": "47dd5cfa789e237a1173f0a83e885d3504503f47fda69c2d71980cc09963dab4",
+          "horizonMedianBps": 0,
+          "holdoutDrawdownBps": 0,
+          "windowCount": 3,
+          "weights": []
+        },
+        {
+          "id": "1e1e34c72d4c37b83bb014f73abfec58337f085c834c8a9bc63f21f097c5cc8c",
+          "name": "BalancedTrend",
+          "verdict": "ELIGIBLE",
+          "reasons": [],
+          "specHash": "4405a082508dedd35f84d16c28eb52af975fdd5bfebb7381fe92817e446a7be4",
+          "horizonMedianBps": 643,
+          "holdoutDrawdownBps": 1429,
+          "windowCount": 3,
+          "weights": [
+            {
+              "instrument": "AAPL",
+              "weightBps": 1327
+            },
+            {
+              "instrument": "JNJ",
+              "weightBps": 1741
+            },
+            {
+              "instrument": "QQQ",
+              "weightBps": 1931
+            }
+          ]
+        }
+      ],
+      "decision": "REVIEW",
+      "plans": [
+        {
+          "id": "924b3a417bd0d6e62c87998ce192cb015cee2175395315748bf95af4b329ba1d",
+          "planStatus": "UNKNOWN",
+          "bindingPhase": "ATTENTION",
+          "error": "DEVNET_CONFIRMATION_PENDING",
+          "budgetAtoms": "1000000",
+          "cashAtoms": "500200",
+          "plannedLegs": [
+            {
+              "side": "BUY",
+              "inputDecimals": 6,
+              "instrument": "JNJ",
+              "inputAtoms": "166600"
+            },
+            {
+              "side": "BUY",
+              "inputDecimals": 6,
+              "instrument": "QQQ",
+              "inputAtoms": "166600"
+            },
+            {
+              "side": "BUY",
+              "inputDecimals": 6,
+              "instrument": "XOM",
+              "inputAtoms": "166600"
+            }
+          ],
+          "policyId": "5c8f408c4dadc03486862ef3d5684a9b2da1adddb1fc56e21b71f49c6bb16cad",
+          "approvalHash": "d9cbf432335863cbd3ee481609fffb94c3eeae71159fa6609334b4b4d8b3a156",
+          "ordersObserved": 2,
+          "filledLegsObserved": 2
+        }
+      ]
+    },
+    {
+      "label": "1 USDC / 1000% / 30 days",
+      "runId": "284339f8-4ea2-4736-a009-39e1a2c10998",
+      "strategyId": "efc96144-7fe6-4c57-a21a-1201f7db6beb",
+      "status": "DECLINED",
+      "createdAt": "2026-09-30T00:31:39.543Z",
+      "updatedAt": "2026-09-30T00:31:56.409Z",
+      "goal": {
+        "targetReturnBps": 100000,
+        "horizonDays": 30,
+        "maxDrawdownBps": 100,
+        "maxWeightBps": 4000,
+        "minCashBps": 1000,
+        "costBps": 50
+      },
+      "engineVersion": "sta-pr07-dsl-bridge/1",
+      "computedAt": "2026-09-30T00:31:56.371180+00:00",
+      "reportHash": "7735e6232e5e92127e67bb86195be6131b3003d56cc861879b9263065ce1040e",
+      "reportHashRecomputed": true,
+      "dataset": {
+        "id": "c9fff0696aad292fa9cf1c0e00a162dc5cb1d67dbe7d0a17d4d6ca150c02caf2",
+        "releaseId": "9ca64ab12c8684ee3516646227a9fc942d91c3af40b5b747c5a13be34cba562e"
+      },
+      "model": {
+        "provider": "Bricksum Kiln",
+        "model": "qwen3-32b",
+        "inputTokens": 876,
+        "outputTokens": 742,
+        "latencyMs": 12400,
+        "promptHash": "276cd1121051516c4c9c7b084179414f4c9d25ec242538cab1b5e630d0832a9c",
+        "responseHash": "a9b6d6b5b41a6e296fd7ac2f8dcdf4d0d7fff0bec7504d5408b6d8a9057fda9b"
+      },
+      "proposal": {
+        "rebalance": "monthly",
+        "designs": {
+          "candidates": [
+            {
+              "name": "MomentumFocus",
+              "idea": "This strategy focuses on recent momentum to capture strong upward trends, but it could fail if the market suddenly reverses or if momentum stocks underperform.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "momentum",
+                    "lookback": 14,
+                    "skip": 0,
+                    "weight": 2
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 21,
+                    "weight": -1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "trend",
+                    "lookback": 21,
+                    "rule": "above",
+                    "value": 0.05
+                  }
+                ],
+                "top_n": 1,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "SPY",
+                  "signal": "drawdown",
+                  "lookback": 21,
+                  "below": -0.01,
+                  "exposure": 0.5
+                }
+              }
+            },
+            {
+              "name": "SteadyGrowth",
+              "idea": "This strategy balances momentum and volatility to find stocks with consistent growth, but it could fail if market conditions become highly volatile or unpredictable.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "momentum",
+                    "lookback": 21,
+                    "skip": 0,
+                    "weight": 1
+                  },
+                  {
+                    "signal": "volatility",
+                    "lookback": 21,
+                    "weight": -1
+                  },
+                  {
+                    "signal": "sharpe",
+                    "lookback": 21,
+                    "weight": 1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "drawdown",
+                    "lookback": 21,
+                    "rule": "above",
+                    "value": -0.02
+                  }
+                ],
+                "top_n": 1,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "QQQ",
+                  "signal": "trend",
+                  "lookback": 21,
+                  "below": 0,
+                  "exposure": 0.5
+                }
+              }
+            },
+            {
+              "name": "ConservativePick",
+              "idea": "This strategy selects the least volatile stock with a positive trend, aiming for stability, but it could fail if the market experiences a broad downturn.",
+              "design": {
+                "score": [
+                  {
+                    "signal": "volatility",
+                    "lookback": 21,
+                    "weight": -1
+                  },
+                  {
+                    "signal": "trend",
+                    "lookback": 21,
+                    "weight": 1
+                  }
+                ],
+                "filters": [
+                  {
+                    "signal": "trend",
+                    "lookback": 21,
+                    "rule": "above",
+                    "value": 0
+                  }
+                ],
+                "top_n": 1,
+                "weighting": "equal",
+                "risk_off": {
+                  "ticker": "VTI",
+                  "signal": "drawdown",
+                  "lookback": 21,
+                  "below": -0.01,
+                  "exposure": 0.5
+                }
+              }
+            }
+          ]
+        }
+      },
+      "proposalHashRecomputed": true,
+      "candidates": [
+        {
+          "id": "93391ccc5d925cc9813d3506f0440814d6a49a041840c63e8ace6215c51767f0",
+          "name": "MomentumFocus",
+          "verdict": "DECLINED",
+          "reasons": [
+            "TARGET_NOT_SUPPORTED",
+            "DRAWDOWN_LIMIT_EXCEEDED",
+            "NON_POSITIVE_HOLDOUT_RETURN",
+            "COST_STRESS_FAILED",
+            "DESIGN_STABILITY_NEEDS_REVIEW",
+            "NO_CURRENT_ALLOCATION"
+          ],
+          "specHash": "6f524243be78c17c0d4978ba68e8f16fb79ac87ea76b31ff55921edf644d05f3",
+          "horizonMedianBps": -39,
+          "holdoutDrawdownBps": 1069,
+          "windowCount": 12,
+          "weights": []
+        },
+        {
+          "id": "0159f21e22e7fb429c169bcbdd3c2c1b681afb3df46a698a6052a4582438453d",
+          "name": "SteadyGrowth",
+          "verdict": "DECLINED",
+          "reasons": [
+            "TARGET_NOT_SUPPORTED",
+            "DRAWDOWN_LIMIT_EXCEEDED",
+            "COST_STRESS_FAILED",
+            "DESIGN_STABILITY_NEEDS_REVIEW"
+          ],
+          "specHash": "c09ee4753599aff195a651c5491c584fb8172158653474bf04b3166dca887b42",
+          "horizonMedianBps": 101,
+          "holdoutDrawdownBps": 517,
+          "windowCount": 12,
+          "weights": [
+            {
+              "instrument": "QQQ",
+              "weightBps": 4000
+            }
+          ]
+        }
+      ],
+      "decision": "DECLINED",
+      "plans": [],
+      "noApprovedPlan": true
+    }
+  ],
+  "exportActions": {
+    "newInferenceCalls": 0,
+    "mainnetSubmissions": 0,
+    "devnetSubmissions": 0,
+    "privateKeysOrApiKeysPublished": false
+  }
+}

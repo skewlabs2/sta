@@ -28,6 +28,10 @@ The report is a proposal. Selecting a candidate produces an integer allocation a
 
 The user's wallet connection is not approval, and approval is not Start. A provisioned Privy binding must establish wallet ownership, the intended additional signer and an unchanged restrictive provider policy. Importing a customer's existing signing key is not part of this design.
 
+Approvals are **plan-scoped**, not an account-wide queue. Creating or approving B leaves A's signed policy and historical outcomes intact. An unused, unclaimed expired draft can expire idempotently; an execution record or delegated claim cannot be erased by that cleanup. Repeating the same approval returns the same identity rather than a second budget.
+
+Natural-language follow-ups retain the previous draft's grounded fields and change only what the user specifies. Time, budget, cash and risk wording are normalized before asking another question. Conflicting or unsupported values do not silently grant authority.
+
 ## 4. Execution plane
 
 The v2 controller accepts `NEW_CAPITAL` and `SELECTED_HOLDINGS_PLUS_NEW_CASH` allocations. It binds the agent wallet's actual holdings, puts sells before dependent buys, and asks StockMesh for exact held-mint liquidation or stock-purchase quotes. Before the signer is reachable, the gate checks:
@@ -42,14 +46,32 @@ The v2 controller accepts `NEW_CAPITAL` and `SELECTED_HOLDINGS_PLUS_NEW_CASH` al
 
 The exact-wire adapter is the new code. The older StockMesh router, pool implementations and exchange UI remain external. Publishing this adapter does not imply a new router deployment or liquidity for every catalog entry.
 
+### Independent strategies, coordinated spending
+
+```text
+Strategy A: research → approve → Start ─┐
+Strategy B: research → approve → Start ─┼─ shared-wallet reservations
+Strategy C: research → decline         │      ↓
+                                      └─ one unresolved signed wire
+                                             ↓
+                               exact chain + engine reconciliation
+                                             ↓
+                                   next ready approved leg
+```
+
+`BEGIN IMMEDIATE` admission compares the shared wallet's available USDC and held-token atoms with other running plans' remaining reservations. A balance observation older than the latest settled receipt is rejected. Two active strategies cannot both count the same cash or shares. Separate wallet balances remain separate.
+
+The scheduler yields between devnet observations instead of waiting through a long confirmation loop. Multiple plan bindings can be `RUNNING`; only ambiguous economic exposure serializes the shared wallet's next order. This is not unlimited parallel signing or permission for the model to enlarge an approved allocation.
+
 ## 5. Recovery plane
 
 ```text
 RESERVING → PERMITTED → SIGNING → SIGNED → UNKNOWN → RECONCILED
-                           │                │             │
-                           │                │             └─ devnet result record
-                           │                └─ finalized error → FAILED_FINALIZED
+                           │                ├─ finalized error → FAILED_FINALIZED
+                           │                └─ expired + nonce proof → EXPIRED_NO_FILL
                            └─ uncertain response → SIGNING_UNKNOWN
+
+terminal classification → StockMesh journal reconciled → devnet result commitment
 ```
 
 The journal uses SQLite WAL with `synchronous=FULL` and immediate write transactions. This is local crash persistence, not replicated high availability. One unresolved order fences the wallet across policy versions. The database is the single-writer coordination boundary; do not deploy multiple independent journals for the same delegated wallet.
@@ -57,6 +79,10 @@ The journal uses SQLite WAL with `synchronous=FULL` and immediate write transact
 `SIGNING_UNKNOWN` means the provider may have produced a signature. Do not re-sign or create a new quote automatically. `UNKNOWN` means the signed transaction may have landed. Retry only its exact bytes within the bounded relay allowance, then reconcile chain evidence. Elapsed time does not prove non-execution and cannot refund reserved spend.
 
 A finalized success must match the exact signed wire, expected signature and fee, plus the wallet's source-token debit and destination-token credit. A finalized failure retains its actual network fee. Result recording happens after this classification, not after an HTTP 200.
+
+`EXPIRED_NO_FILL` is available only when finalized blockhash expiry, absent signature history and the exact unchanged StockMesh nonce beyond the instruction deadline agree. The original signed bytes, signature and proof remain in the journal. This condition does not retry with a new blockhash, erase filled legs, or assert zero fees from missing history. A terminal failed/unfilled leg stops the remainder of that allocation rather than inventing a new strategy.
+
+Chain finality alone also does not release the next order: the corresponding StockMesh engine journal must be reconciled (or exact expiry evidence must establish that the engine never admitted it). This prevents the application from racing its router's still-unresolved nonce state.
 
 ## 6. Two chains, one explicit trust boundary
 

@@ -1,6 +1,17 @@
 # STA — Stock Token Agent
 
-**Research a stock allocation. Test the idea. Approve a version. Account for what actually happened.**
+**Tell it the goal. Test the strategy. Approve the plan. Let the agent execute.**
+
+[![Watch the STA demo — research, approval, autonomous mainnet purchases and a refused target](docs/assets/sta-demo.jpg)](https://github.com/xtxctrade/sta/releases/download/demo-20260930/STA-Demo-2m56s-English.mp4)
+
+**[Watch the 2:56 demo](https://github.com/xtxctrade/sta/releases/tag/demo-20260930)** · [Mainnet + devnet transactions](docs/DEMO.md) · [Actual Kiln API usage](docs/KILN_USAGE.md) · [Open the workspace](https://xtxc.trade/exchange?view=research)
+
+```text
+Request → backtest → approve → agent buys → change the goal → research again
+                                                        └─ impossible target → decline
+```
+
+Two independently approved strategies. Three finalized mainnet purchase legs. Three recorded Kiln research calls. The recording is one continuous session at **1.55× speed**, with English captions and no scene cuts; it is not a real-time latency benchmark.
 
 STA turns a plain-language stock-investing goal into measured strategy candidates and owner-approved, policy-gated execution through XTXC.
 
@@ -71,6 +82,14 @@ If a signer times out, the system cannot assume that no signature exists. It rec
 
 Stopping one policy and creating another does not escape the wallet-wide unresolved-order fence. [The restart and cross-policy tests](tests/research-autonomy.test.mjs) exercise that distinction.
 
+### Strategies are independent. A wallet is shared.
+
+Researching, approving or starting strategy B does not require finishing or revoking strategy A. Each plan retains its own version, budget, policy and receipts. The controller atomically reserves available cash and tokens across active plans; only the next signed order waits for the shared wallet's previous unresolved transaction, not for an entire strategy.
+
+Receipt recovery checks both the chain and StockMesh's order journal before advancing. Signed expiry requires an expired finalized blockhash, absent transaction history and an unchanged exact StockMesh nonce after the instruction deadline. A missing explorer page is not proof of failure. Recovery preserves acquired assets and never manufactures a replacement order.
+
+English, Korean and conversational follow-ups preserve explicit amounts, horizons, cash floors and exclusions. “One year,” “1years,” “annual” and “1년” reach the same duration; the model cannot turn interpretation into trading authority. [Conversation regressions](tests/research-intake-conversation.test.mjs) and [independent-plan tests](tests/research-autonomy-control.test.mjs) cover the reported user flows.
+
 ### Approval binds the transaction, not the button
 
 The gate checks the approved owner, plan version, wallet, budget and mint universe. It then decodes the prepared transaction and verifies permitted StockMesh instructions, account roles, amount, minimum output and fee bounds. Provider consent and signer policy must still match immediately before signing.
@@ -97,6 +116,7 @@ Use **Linux, Node 22.13+ within the 22.x line, Python 3.12 and Rust**. The publi
 npm ci --ignore-scripts --no-audit --no-fund
 npm test
 npm run verify:bundle
+npm run verify:evidence
 
 python3 -m venv .venv
 . .venv/bin/activate
@@ -116,7 +136,9 @@ For module responsibilities, controlled provider checks and the SVM harness, see
 
 ## Evidence you can inspect
 
-* [Publication verification](evidence/verification.json): exact suite results, scope and checksums.
+* [Latest publication verification](evidence/verification-20260930-final.json): current complete suite results and source/output checksums. [Initial publication results](evidence/verification.json) remain historical.
+* [Recorded mainnet execution](evidence/demo-execution-20260930.json): three exact-wire fills, token balance deltas, two owner approvals and six matching devnet reservation/result instructions, freshly rechecked at finalized commitment.
+* [Kiln demo usage](evidence/kiln-demo-20260930.json): the three requests in the video, **2,655 input + 2,113 output tokens**, actual normalized proposals, report/dataset identities and recomputable response hashes. These are application-retained provider observations, not mock responses or provider-signed certificates.
 * [Kiln observations](evidence/kiln-observed.json): actual historical provider/model calls, input/output token counts and proposal hashes; ordinary research and a rejected target are separate records.
 * [Devnet observations](evidence/devnet-observed.json): deployment, policy creation, reservation and revocation transaction signatures; negative simulations are labeled as simulations.
 * [Research integration](evidence/research-integration-20260930.json): actual production Kiln/PR7 result, source release and ASML coverage, without user identity or raw prices.
@@ -131,7 +153,7 @@ The September 30 V2 deployment ELF hash is `06bddfd62810eb89fec0cc58137209ed56af
 
 ## Integration and release status
 
-This source includes both new-capital buying and holdings-aware buy/sell execution. Research, contract execution, service deployment and observed trades are recorded separately in [the evidence ledger](docs/EVIDENCE.md). That ledger identifies the deployed policy version and the observations behind each claim; implementation is not mislabeled as missing merely because a recording is still pending.
+This source includes both new-capital buying and holdings-aware buy/sell execution. The recorded session demonstrates user-approved autonomous **mainnet buying**, with devnet reservation and result commitments. Research, contract tests, individual fills and full-allocation completion remain separate in [the evidence ledger](docs/EVIDENCE.md). The demo does not claim a live autonomous sale or completion of every planned leg.
 
 The recorded model is `qwen3-32b` on Bricksum Kiln. The published Challenge A brief names `gpt-oss-120b`; organizer acceptance of this substitution has not been established by this repository. [Submission evidence and remaining items](docs/EVIDENCE.md) make the distinction explicit.
 

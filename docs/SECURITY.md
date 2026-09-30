@@ -11,6 +11,7 @@ This is a personal hackathon implementation, not an externally audited delegated
 | Provider → signer | Wrong app/owner/wallet, changed policy, extra authority | No signature request |
 | Router → signer | Wrong mint/amount/receiver, changed message, unexpected instruction | No signature request |
 | Journal → policy | Pending order, counter regression, changed approval | No replacement spend |
+| Shared wallet → plan Start | Already reserved cash/shares or stale post-fill balance | No double reservation; unrelated research and approval remain available |
 | RPC → receipt | Wrong cluster/wire/status/fee or missing token delivery | No delivered position |
 
 ## What the system trusts

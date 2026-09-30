@@ -34,6 +34,10 @@ Cross-host verification exposed a few-ULP difference in derived float64 metrics.
 
 The on-chain Rust policy implementation is unchanged from the observed deployment source. The SVM harness only changes how its isolated artifact directory is selected. Public-copy changes were **not silently promoted to production**.
 
+The final September 30 refresh imports the already-deployed independent-strategy, receipt-recovery and conversational-intake changes, plus their regression tests. Provenance retains each original source hash and records the previous publication hash and current release comparison separately; it does not rewrite the earlier snapshot. The public refresh does not redeploy a service, create a new policy or start trading.
+
+The owner-recorded demo and owner-authorized public transaction observations are new submission artifacts. The video is hosted as a release asset rather than committed to source history. Its manifest records a uniform 1.55× speed change with captions and no cuts. Private databases and raw model prompts remain excluded; sanitized report, proposal, receipt and usage observations are explicitly allowlisted.
+
 ## Documentation references
 
 The README structure was informed by [TigerBeetle's architecture explanation](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/ARCHITECTURE.md) and [Pydantic AI's project entry point](https://github.com/pydantic/pydantic-ai). The prose and diagrams here describe STA's own implementation; they do not claim either project's maturity, performance or endorsement.

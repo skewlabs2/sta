@@ -31,9 +31,9 @@ test('model budget reserves uncertain usage and blocks excess',t=>{const{s}=setu
 test('wallet login is never a trading mandate',()=>{assert.throws(()=>checkDelegatedAuthority({verifiedByWalletAdapter:false},{},{ }));});
 test('agent-wallet claim excludes simultaneous manual execution and replacement policies',t=>{const{s,strategy}=setup(t),p=approve(s,strategy);s.claimAutonomy(owner,p.id,'a'.repeat(64));s.claimAutonomy(owner,p.id,'a'.repeat(64));assert.throws(()=>s.reserveStep(owner,p.id,0),/agent wallet/);assert.throws(()=>s.claimAutonomy(owner,p.id,'b'.repeat(64)));assert.equal(s.view(owner,strategy.id).plans[0].executionMode,'AGENT_WALLET');});
 test('manual reservation prevents claiming the same allocation for an agent wallet',t=>{const{s,strategy}=setup(t),p=approve(s,strategy);s.reserveStep(owner,p.id,0);assert.throws(()=>s.claimAutonomy(owner,p.id,'a'.repeat(64)),/unused allocation/);});
-for(const phase of ['UNKNOWN','SUBMITTED','FINALIZED'])test('revoking a plan cannot unlock a second allocation while '+phase,t=>{
+for(const phase of ['UNKNOWN','SUBMITTED','FINALIZED'])test('unresolved '+phase+' is preserved without blocking another research approval',t=>{
  const{s,strategy}=setup(t),p=approve(s,strategy);s.reserveStep(owner,p.id,0);prepared(s,p,0);s.recordStep(owner,p.id,0,phase);s.revoke(owner,p.id);
- const r=reviewed(s,strategy);assert.throws(()=>s.approve(owner,r.id,'equal_weight',r.result.reportHash),/previous trade outcome/);
+ const r=reviewed(s,strategy);assert.ok(s.approve(owner,r.id,'equal_weight',r.result.reportHash).id);assert.equal(s.step(owner,p.id,0).phase,phase);
  s.recordStep(owner,p.id,0,'RECONCILED');assert.ok(s.approve(owner,r.id,'equal_weight',r.result.reportHash).id);
 });
 test('revocation during quote prevents late prepared transaction from entering a plan',t=>{const{s,strategy}=setup(t),p=approve(s,strategy);s.reserveStep(owner,p.id,0);s.revoke(owner,p.id);assert.throws(()=>prepared(s,p,0),/changed during preparation/);});
@@ -43,3 +43,12 @@ test('holdings review draft binds owner, report, exact sell mint and idempotent 
  const tx={owner:owner.slice(7),quoteId:'sell-fixture',preparedId:'sell-unsigned',expiresAt:new Date(Date.now()+60000).toISOString()};assert.throws(()=>s.bindPrepared(owner,p.id,0,tx,quote));quote.inputProduct.mint='exact-mint';s.bindPrepared(owner,p.id,0,tx,quote);assert.equal(s.step(owner,p.id,0).phase,'PREPARED');
 });
 test('Kiln rejects absent models, tool/code proposals and never leaks raw responses',async t=>{const{s,strategy}=setup(t),config={KILN_API_KEY:'test-only-not-a-secret',KILN_BASE_URL:'https://api.bricksum.com/v1',KILN_MODEL_ID:'qwen3-32b'};const input={strategy,goal};await assert.rejects(kilnProposal(input,config,s,async()=>Response.json({data:[]})),/not available/);let n=0;await assert.rejects(kilnProposal(input,config,s,async()=>Response.json(n++?{usage:{prompt_tokens:10,completion_tokens:10},choices:[{message:{content:JSON.stringify({rebalance:'weekly',lookback:63,rationale:'x',execute:'bad'})}}]}:{data:[{id:'qwen3-32b'}]})),/invalid research proposal/);});
+test('new research refreshes old partial outcome without visiting or reviving its strategy',async t=>{
+ const{s,strategy}=setup(t),p=approve(s,strategy),policy='a'.repeat(64);s.claimAutonomy(owner,p.id,policy);
+ const execution={id:policy,planId:p.id,phase:'ATTENTION',wallet:'agent',orders:[{index:0,instrument:'NVDA',phase:'RECONCILED',receipt:{signature:'landed'}},{index:1,instrument:'AMD',phase:'UNKNOWN'}]};
+ s.syncAutonomy(owner,p.id,execution);const next=s.mutate(owner,{operation:'CREATE',requestId:randomUUID(),brief:{...brief,name:'Fresh recording'}}),r=reviewed(s,next);
+ assert.ok(s.approve(owner,r.id,'equal_weight',r.result.reportHash).id);assert.equal(s.plan(owner,p.id).status,'UNKNOWN');
+ await assert.rejects(s.refreshAutonomy(owner,async()=>({...execution,id:'b'.repeat(64)})),/binding changed/);
+ await s.refreshAutonomy(owner,async(raw,id)=>{assert.equal(raw,owner.slice(7));assert.equal(id,policy);return{...execution,phase:'STOPPED',orders:[execution.orders[0],{...execution.orders[1],phase:'EXPIRED_NO_FILL',receipt:{schema:'xtxc.signed-expiry/v1'}}]};});
+ assert.equal(s.plan(owner,p.id).status,'REVOKED');assert.equal(s.view(owner,strategy.id).plans[0].steps[0].phase,'RECONCILED');assert.ok(s.approve(owner,r.id,'equal_weight',r.result.reportHash).id);
+});
