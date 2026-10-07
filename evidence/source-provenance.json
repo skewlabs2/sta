@@ -1,6 +1,6 @@
 {
   "schema": "sta.source-provenance/v1",
-  "scope": "Source snapshot and server mtimes, not historical Git authorship proof. No commit timestamps were backdated.",
+  "scope": "Source snapshot and server mtimes, not historical Git authorship proof. No commit timestamps were backdated. Current publication hashes include explicitly labeled post-publication revisions; original source hashes and observed mtimes remain historical.",
   "eventCodeStart": "2026-09-28T19:00:00+09:00",
   "preexistingRouter": "https://github.com/xtxctrade/xtxc",
   "rows": [
@@ -644,7 +644,7 @@
       "observedSourceMtime": "2026-09-29T19:57:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "d5c58c6348ea54e1bd490eb9fc54e7b9530e85733289aba03584a96d1a5efa32",
-      "publicationSha256": "69a853a3f9bc8932a2d4880a069a153c5f06aed4514deb9e59b9a240c2bb0c3c",
+      "publicationSha256": "79db8a41cc4a54b5932695a881767ff7a57db6aaeb582df4c9f3a17e30fe6d89",
       "modifiedForPublication": false,
       "initialPublicationSha256": "d5c58c6348ea54e1bd490eb9fc54e7b9530e85733289aba03584a96d1a5efa32",
       "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2",
@@ -658,7 +658,13 @@
           "publicationSha256": "69a853a3f9bc8932a2d4880a069a153c5f06aed4514deb9e59b9a240c2bb0c3c",
           "previousPublicationSha256": "5e8b9f690e01daea555023aeac0ed48acf2a5bf5cb94a4c8850924c91dc201a5"
         }
-      ]
+      ],
+      "postPublicationRevision": {
+        "observedAt": "2026-10-07T14:27:26.790982+00:00",
+        "previousPublicationSha256": "69a853a3f9bc8932a2d4880a069a153c5f06aed4514deb9e59b9a240c2bb0c3c",
+        "revision": "Continuous trading; October 7 extension, separate from the original hackathon snapshot",
+        "verification": "evidence/continuous-verification-20261007.json"
+      }
     },
     {
       "path": "lib/research-anchor.mjs",
@@ -675,7 +681,7 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "8f86f972ad85bb6a84dfbf55260f1df11a97fa83cd3c4235df829d0db599ac87",
-      "publicationSha256": "580574d9c9e643c207fdf7a4dc7b55902e7092c64ae1511c846bdcddcd1bf7db",
+      "publicationSha256": "8add105de68d9e58f3ba17b865e03aeb43e1fb5c0fa86a8668fa83f68527650d",
       "modifiedForPublication": false,
       "initialPublicationSha256": "8f86f972ad85bb6a84dfbf55260f1df11a97fa83cd3c4235df829d0db599ac87",
       "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2",
@@ -689,7 +695,13 @@
           "publicationSha256": "580574d9c9e643c207fdf7a4dc7b55902e7092c64ae1511c846bdcddcd1bf7db",
           "previousPublicationSha256": "107f8cd56bf25fa0857ccc784bf1b353957c08693e0c72417eb677f5a8520c44"
         }
-      ]
+      ],
+      "postPublicationRevision": {
+        "observedAt": "2026-10-07T14:27:26.790982+00:00",
+        "previousPublicationSha256": "580574d9c9e643c207fdf7a4dc7b55902e7092c64ae1511c846bdcddcd1bf7db",
+        "revision": "Continuous trading; October 7 extension, separate from the original hackathon snapshot",
+        "verification": "evidence/continuous-verification-20261007.json"
+      }
     },
     {
       "path": "lib/research-autonomy-devnet.mjs",
@@ -763,8 +775,14 @@
       "observedSourceMtime": "2026-09-29T19:56:47+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "0a72b4838f1ec0e40251b84e5fa5505aaed793784ba0dcf38f737c0c35e127bc",
-      "publicationSha256": "0a72b4838f1ec0e40251b84e5fa5505aaed793784ba0dcf38f737c0c35e127bc",
-      "modifiedForPublication": false
+      "publicationSha256": "26e301fcce3ccc3d83e6dabf8adeae0fb0d43074768fdbf12ae2c7c66cb76d2a",
+      "modifiedForPublication": false,
+      "postPublicationRevision": {
+        "observedAt": "2026-10-07T14:27:26.790982+00:00",
+        "previousPublicationSha256": "0a72b4838f1ec0e40251b84e5fa5505aaed793784ba0dcf38f737c0c35e127bc",
+        "revision": "Continuous trading; October 7 extension, separate from the original hackathon snapshot",
+        "verification": "evidence/continuous-verification-20261007.json"
+      }
     },
     {
       "path": "lib/research-autonomy-rpc.mjs",
@@ -1025,10 +1043,16 @@
       "observedSourceMtime": "2026-09-29T18:56:53.482717+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "718abd384ea5724a5fe7a5a6c55bac39cc50648b5921ab73f6a0f6f48c460e55",
-      "publicationSha256": "a2f45d8f987d88c3a82a93e7328e53402abc5e851202c8cbf901eb7dcbec2252",
+      "publicationSha256": "afcb0b79cc56026199228d88c2c9292a70dce5503320de4c42edba9fb96ead63",
       "modifiedForPublication": false,
       "initialPublicationSha256": "718abd384ea5724a5fe7a5a6c55bac39cc50648b5921ab73f6a0f6f48c460e55",
-      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2"
+      "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2",
+      "postPublicationRevision": {
+        "observedAt": "2026-10-07T14:27:26.790982+00:00",
+        "previousPublicationSha256": "a2f45d8f987d88c3a82a93e7328e53402abc5e851202c8cbf901eb7dcbec2252",
+        "revision": "Continuous trading; October 7 extension, separate from the original hackathon snapshot",
+        "verification": "evidence/continuous-verification-20261007.json"
+      }
     },
     {
       "path": "scripts/research-autonomy-service.mjs",
@@ -1036,7 +1060,7 @@
       "observedSourceMtime": "2026-09-29T20:06:38.373778+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "3f4a904572e85d78f78adeb60e083c9baafd1d6a4612e66fe094f957fb013314",
-      "publicationSha256": "decb950cb9e32bdd89e7107bf9c44dc54b02a19b30bfbfdd86547720a263966e",
+      "publicationSha256": "edb5c8cc8074a8170e167e6cf8e40ba2b3afc0eb751b4160c2bed6fa10f086bd",
       "modifiedForPublication": false,
       "publicationRevisions": [
         {
@@ -1048,7 +1072,13 @@
           "publicationSha256": "decb950cb9e32bdd89e7107bf9c44dc54b02a19b30bfbfdd86547720a263966e",
           "previousPublicationSha256": "3f4a904572e85d78f78adeb60e083c9baafd1d6a4612e66fe094f957fb013314"
         }
-      ]
+      ],
+      "postPublicationRevision": {
+        "observedAt": "2026-10-07T14:27:26.790982+00:00",
+        "previousPublicationSha256": "decb950cb9e32bdd89e7107bf9c44dc54b02a19b30bfbfdd86547720a263966e",
+        "revision": "Continuous trading; October 7 extension, separate from the original hackathon snapshot",
+        "verification": "evidence/continuous-verification-20261007.json"
+      }
     },
     {
       "path": "scripts/research-wallet-service.mjs",
@@ -1123,7 +1153,7 @@
       "observedSourceMtime": "2026-09-29T19:47:46+00:00",
       "mtimeInEventWindow": true,
       "sourceSha256": "77ad65732138af0398b190b2a8b159ee0fab6a8e84ca43df3d0961543376a66e",
-      "publicationSha256": "e00365dbd5dc75d275533dd50f774c76aef0e754c10ea9986b7c7c1a86f8d7da",
+      "publicationSha256": "58d0dc8c8d01ba411a8a396e700e84ea4afd25c71f96e1e33952fcd0e3476634",
       "modifiedForPublication": false,
       "initialPublicationSha256": "77ad65732138af0398b190b2a8b159ee0fab6a8e84ca43df3d0961543376a66e",
       "integrationRevision": "2026-09-30: actual PR07 bridge, full research coverage and exact buy/sell policy v2",
@@ -1137,7 +1167,13 @@
           "publicationSha256": "e00365dbd5dc75d275533dd50f774c76aef0e754c10ea9986b7c7c1a86f8d7da",
           "previousPublicationSha256": "5ab088831a89cdaf352164b733ec923835c874cb00fba482825db0171a16714a"
         }
-      ]
+      ],
+      "postPublicationRevision": {
+        "observedAt": "2026-10-07T14:27:26.790982+00:00",
+        "previousPublicationSha256": "e00365dbd5dc75d275533dd50f774c76aef0e754c10ea9986b7c7c1a86f8d7da",
+        "revision": "Continuous trading; October 7 extension, separate from the original hackathon snapshot",
+        "verification": "evidence/continuous-verification-20261007.json"
+      }
     },
     {
       "path": "tests/research-autonomy-devnet.test.mjs",
