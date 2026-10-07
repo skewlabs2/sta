@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { AgentStore, briefHash } from '../lib/research-agent-core.mjs';
 import { kilnProposal, AgentUnavailable } from '../lib/research-kiln.mjs';
+import {flushOperatingResearch} from '../lib/research-ongoing-feed.mjs';
 
 export function evaluate(input,inspect=false,signal) {
   return new Promise((resolve,reject)=>{
@@ -35,18 +36,19 @@ export async function processRun(store,run,config) {
   }catch(e){if(!abort.signal.aborted)store.finish(run,e.stage??'FAILED',null,e.message?.slice(0,350)??'Research failed.');}
   finally{clearInterval(timer);}
 }
-function monitors(store) {
+export function monitors(store) {
   let release;
   try{release=JSON.parse(readFileSync(process.env.XTXC_RESEARCH_DATA_ROOT+'/prices/quant_release.json','utf8')).release_id;}catch{return;}
   for(const row of store.db.prepare('SELECT * FROM agent_monitors WHERE next_at<=? LIMIT 20').all(Date.now())){
     const m=JSON.parse(row.document);
     store.db.prepare('UPDATE agent_monitors SET next_at=? WHERE owner=? AND strategy=?').run(Date.now()+900000,row.owner,row.strategy);
     if(!m.enabled)continue;
-    if(m.expiresAt<=Date.now()){m.enabled=false;m.reason='EXPIRED';store.db.prepare('UPDATE agent_monitors SET document=? WHERE owner=? AND strategy=?').run(JSON.stringify(m),row.owner,row.strategy);continue;}
+    if(m.expiresAt!==0&&m.expiresAt<=Date.now()){m.enabled=false;m.reason='EXPIRED';store.db.prepare('UPDATE agent_monitors SET document=? WHERE owner=? AND strategy=?').run(JSON.stringify(m),row.owner,row.strategy);continue;}
     const strategy=store.get(row.owner,row.strategy);
     if(briefHash(strategy)!==m.briefHash){m.enabled=false;m.reason='BRIEF_CHANGED';}
-    else if(m.lastRelease!==release){
-      try{m.lastRunId=store.enqueue(m.owner,row.strategy,m.goal,randomUUID());m.lastRelease=release;store.event(row.owner,row.strategy,'MONITOR_RESEARCH',{runId:m.lastRunId});}catch{continue;}
+    else if(m.lastRelease!==release||(m.mode==='CONTINUOUS_TRADING'&&Date.now()-(m.lastResearchAt??0)>m.maxResearchAgeMs/2)){
+      if(store.db.prepare("SELECT id FROM agent_runs WHERE owner=? AND strategy=? AND status IN ('QUEUED','RUNNING','WAITING_DATA','WAITING_MODEL')").get(row.owner,row.strategy))continue;
+      try{m.lastRunId=store.enqueue(m.owner,row.strategy,m.goal,randomUUID());m.lastRelease=release;m.lastResearchAt=Date.now();store.event(row.owner,row.strategy,'MONITOR_RESEARCH',{runId:m.lastRunId});}catch{continue;}
     }
     store.db.prepare('UPDATE agent_monitors SET document=? WHERE owner=? AND strategy=?').run(JSON.stringify(m),row.owner,row.strategy);
   }
@@ -55,7 +57,7 @@ async function main() {
   const store=new AgentStore(process.env.XTXC_RESEARCH_DB,[]);
   let stopping=false;process.on('SIGTERM',()=>{stopping=true;});process.on('SIGINT',()=>{stopping=true;});
   while(!stopping){
-    try{monitors(store);const run=store.claim();if(run)await processRun(store,run,process.env);}
+    try{await flushOperatingResearch(store);monitors(store);const run=store.claim();if(run)await processRun(store,run,process.env);await flushOperatingResearch(store);}
     catch{process.stderr.write('Research worker cycle failed; no transaction was sent.\n');}
     if(process.argv.includes('--once'))break;
     await new Promise(r=>setTimeout(r,3000));

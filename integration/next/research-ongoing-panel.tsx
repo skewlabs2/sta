@@ -1,0 +1,39 @@
+'use client';
+import {useCallback,useEffect,useRef,useState} from 'react';
+import type {SolanaSignMessageFeature} from '@solana/wallet-standard-features';
+import {ensureSolanaSession} from './stocklana-exchange-client';
+import './research-autonomy-panel.css';
+type Execution={id:string;wallet:string;phase:string;progress:string;reason:string|null;messageToSign?:string;drawdownBps:number|null;authorized:boolean;orders:{id:string;instrument:string;side:string;phase:string;signature:string|null;receipt?:{inputAtoms?:string;outputAtoms?:string}}[];config:{capitalAtoms:string;buyTurnoverAtoms:string;maxLossBps:number}};
+const api='/api/v1/stocklana/research/ongoing';
+const units=(v:string)=>{if(!/^(0|[1-9]\d*)(\.\d{1,6})?$/.test(v))throw Error('Use a positive amount with at most six decimals.');const[a,b='']=v.split('.');const n=BigInt(a)*1000000n+BigInt(b.padEnd(6,'0'));if(n<=0n)throw Error('Use a positive amount.');return String(n);};
+export function ResearchOngoingPanel({wallet,strategyId,runId,budget,goal}:{wallet:string|null;strategyId:string;runId:string;budget:string;goal:{maxDrawdownBps:number;minCashBps:number;maxWeightBps:number}}){
+ const [data,setData]=useState<Execution|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[capital,setCapital]=useState(budget),[turnover,setTurnover]=useState(budget),[perBuy,setPerBuy]=useState(budget),[orders,setOrders]=useState('100'),[riskAction,setRiskAction]=useState('LIQUIDATE');
+ const identity=useRef(''),flight=useRef(false);identity.current=`${wallet}:${strategyId}`;
+ const refresh=useCallback(async()=>{if(!wallet)return;const key=`${wallet}:${strategyId}`;try{const r=await fetch(`${api}?strategyId=${strategyId}`,{cache:'no-store',headers:{'X-Skew-Expected-Requester':`solana:${wallet}`},signal:AbortSignal.timeout(10000)}),b=await r.json();if(r.ok&&identity.current===key)setData(old=>b.execution??(old?.phase==='DRAFT'?old:null));}catch{/* Keep the last verified response. */}},[wallet,strategyId]);
+ useEffect(()=>{setData(null);setError('');void refresh();const t=setInterval(()=>{if(!document.hidden)void refresh();},5000);return()=>clearInterval(t);},[refresh]);
+ async function request(body:Record<string,unknown>){const r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json','X-Skew-Expected-Requester':`solana:${wallet}`},body:JSON.stringify(body),signal:AbortSignal.timeout(90000)}),b=await r.json();if(!r.ok)throw Error(b.error?.message??'Connection unavailable.');return b.execution as Execution;}
+ async function act(operation:string){if(!wallet||flight.current)return;flight.current=true;setBusy(true);setError('');const key=identity.current;
+  try{await ensureSolanaSession(wallet);if(identity.current!==key)throw Error('Account changed.');let result:Execution;
+   if(operation==='DRAFT')result=await request({operation,runId,limits:{capitalAtoms:units(capital),buyTurnoverAtoms:units(turnover),perBuyAtoms:units(perBuy),maxOrders:orders,feeBudgetLamports:null,expiresAt:'0',maxSlippageBps:20,maxLossBps:goal.maxDrawdownBps,minCashBps:goal.minCashBps,maxWeightBps:goal.maxWeightBps,rebalanceBandBps:100,minTradeAtoms:'10000',pollMs:15000,maxResearchAgeMs:86400000,riskAction,riskReductionBps:5000}});
+   else if(operation==='ACTIVATE') {
+    if(!data?.messageToSign)throw Error('Review the operating mandate first.');
+    const {getWallets}=await import('@wallet-standard/app'),w=getWallets().get().find(w=>w.accounts.some(a=>a.address===wallet)),account=w?.accounts.find(a=>a.address===wallet),feature=w?.features['solana:signMessage'] as SolanaSignMessageFeature['solana:signMessage']|undefined;
+    if(!account||!feature)throw Error('Use a wallet supporting message signatures.');
+    const message=new TextEncoder().encode(data.messageToSign),out=await feature.signMessage({account,message});
+    if(identity.current!==key||out.length!==1||out[0].signedMessage.length!==message.length||!out[0].signedMessage.every((x,i)=>x===message[i]))throw Error('Approval changed. Nothing was activated.');
+    const signature=btoa(String.fromCharCode(...out[0].signature));sessionStorage.setItem(`sta-operating:${wallet}:${data.id}`,signature);
+    result=await request({operation,id:data.id,signature});
+   }else if(operation==='RECOVER') {
+    const signature=sessionStorage.getItem(`sta-operating:${wallet}:${data?.id}`);if(!signature)throw Error('No saved approval.');result=await request({operation:'ACTIVATE',id:data?.id,signature});
+   }else result=await request({operation,id:data?.id});
+   if(identity.current===key)setData(result);
+  }catch(e){if(identity.current===key)setError(e instanceof Error?e.message:'Connection unavailable.');}finally{flight.current=false;setBusy(false);}
+ }
+ return <section className="ra-autonomy" aria-label="Continuous autonomous trading"><header><div><h4>Continuous trading</h4><p>Research → rebalance → settle → watch again.</p></div><button className="ra-text" disabled={busy} onClick={()=>void refresh()}>Refresh</button></header>
+  {!data?<><div className="ra-goals"><label>Managed capital · USDC<input value={capital} onChange={e=>setCapital(e.target.value)}/></label><label>Total buy turnover · USDC<input value={turnover} onChange={e=>setTurnover(e.target.value)}/></label><label>Maximum per buy · USDC<input value={perBuy} onChange={e=>setPerBuy(e.target.value)}/></label><label>Total transaction allowance<input value={orders} onChange={e=>setOrders(e.target.value)}/></label><label>At loss limit<select value={riskAction} onChange={e=>setRiskAction(e.target.value)}><option value="LIQUIDATE">Sell all managed positions</option><option value="REDUCE">Reduce positions by 50%</option></select></label></div><p className="ra-caption">Loss limit {goal.maxDrawdownBps/100}%. No end time; pause or revoke whenever you want. Keep USDC and SOL in your agent wallet. Network fees and account rent are paid separately in SOL.</p><button className="ra-primary" disabled={busy||!wallet} onClick={()=>void act('DRAFT')}>Review ongoing authority</button></>:<><p className="ra-caption"><b>{data.phase} · {data.progress}</b>{data.reason&&<span> · {data.reason}</span>}</p><div className="ra-auto-wallet"><span>Agent wallet</span><a href={`https://explorer.solana.com/address/${data.wallet}`} target="_blank" rel="noreferrer">{data.wallet.slice(0,6)}…{data.wallet.slice(-6)}</a></div><p className="ra-caption">Capital {(Number(data.config.capitalAtoms)/1e6).toLocaleString()} USDC · Buy turnover {(Number(data.config.buyTurnoverAtoms)/1e6).toLocaleString()} USDC · Loss limit {data.config.maxLossBps/100}%</p>
+   {data.phase==='DRAFT'&&<><details><summary>Exact authority to sign</summary><pre style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere',maxHeight:240,overflow:'auto'}}>{data.messageToSign}</pre></details><button className="ra-primary" disabled={busy} onClick={()=>void act('ACTIVATE')}>Authorize once and start</button>{error&&<button className="ra-text" disabled={busy} onClick={()=>void act('RECOVER')}>Retry saved authorization</button>}</>}
+   {['ACTIVE','RISK_EXIT'].includes(data.phase)&&<button className="ra-text" disabled={busy} onClick={()=>void act('PAUSE')}>Pause trading</button>}{data.phase==='PAUSED'&&<button className="ra-primary" disabled={busy} onClick={()=>void act('RESUME')}>Resume existing authority</button>}{!['REVOKED','EXPIRED'].includes(data.phase)&&<button className="ra-text" disabled={busy} onClick={()=>void act('REVOKE')}>Revoke authority</button>}
+   <ol className="ra-auto-orders">{data.orders.map(o=><li key={o.id}><div><b>{o.side} {o.instrument}</b><span>{o.phase==='RECONCILED'?'Settled':o.phase}</span></div>{o.signature&&<a href={`https://explorer.solana.com/tx/${o.signature}`} target="_blank" rel="noreferrer">Mainnet receipt</a>}</li>)}</ol></>}
+  {error&&<p className="ra-error" role="alert">{error}</p>}
+ </section>;
+}

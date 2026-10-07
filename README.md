@@ -15,6 +15,8 @@ Two independently approved strategies. Three finalized mainnet purchase legs. Th
 
 STA turns a plain-language stock-investing goal into measured strategy candidates and owner-approved, policy-gated execution through XTXC.
 
+Continuous operation is available through an [owner-signed operating mandate](docs/CONTINUOUS_TRADING.md): fresh research can rebalance automatically, loss limits trigger reduction or liquidation, and finalized delivery closes each trade before monitoring continues. This extension uses the existing StockMesh and isolated Privy execution boundary; its software checks are distinct from the historical recorded demo fills.
+
 An agent can write a convincing investment thesis without having a viable strategy. It can also produce a valid transaction without having permission to spend. STA treats those as two different problems, and makes neither one the model's decision.
 
 The model interprets the request and proposes bounded strategy designs. The existing PR5 data layer and PR7 strategy executor evaluate them with deterministic backtests. The user approves a particular version. A separate execution service checks the actual transaction, reserves the approved allowance, requests a signature and reconciles delivery.
