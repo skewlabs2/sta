@@ -104,6 +104,17 @@ test('independent strategies start together; shared cash cannot be reserved twic
  assert.equal(outcomes.filter(o=>o.status==='fulfilled').length,1);assert.match(outcomes.find(o=>o.status==='rejected').reason.message,/BUDGET_RESERVED/);
  assert.equal(x.db.prepare("SELECT count(*) n FROM autonomy_bindings WHERE phase='RUNNING'").get().n,2);assert.equal(x.counts().signs,0);assert.equal(x.counts().submits,0);
 });
+test('an ongoing authority activated during legacy Start funding checks wins before reservation',async t=>{
+ const x=fixture(t),p=await x.gate.draft(x.owner,{plan:x.plan});x.gate.save(x.gate.row(x.owner,p.id),'READY');
+ x.db.exec('CREATE TABLE ongoing_mandates(id TEXT,wallet TEXT,phase TEXT); CREATE TABLE ongoing_execution_orders(id TEXT,wallet TEXT,phase TEXT);');
+ x.devnet.observe=async c=>{
+  x.db.prepare('INSERT INTO ongoing_mandates VALUES(?,?,?)').run('ongoing',x.wallet,'ACTIVE');
+  const {state,bump}=await policyAddress(c),d=Buffer.alloc(616);d.write('XTXCDMP2');for(const [p,key] of [[8,c.owner],[40,c.verifier],[72,c.wallet]])keyBytes(key).copy(d,p);Buffer.from(c.id,'hex').copy(d,104);Buffer.from(c.approvalHash,'hex').copy(d,136);for(const [p,v] of [[168,c.startsAt],[176,c.expiresAt],[184,c.buyBudgetAtoms],[208,c.maxOrders],[216,c.perBuyAtoms]])d.writeBigUInt64LE(BigInt(v),p);d[227]=bump;Buffer.from(c.tradeRoot,'hex').copy(d,344);
+  return {genesisHash:DEVNET,commitment:'finalized',address:state,owner:c.program,slot:1,observedAt:Date.now(),dataBase64:d.toString('base64')};
+ };
+ await assert.rejects(x.gate.start(x.owner,p.id,p.approvalHash),/WALLET_ALREADY_MANAGED/);
+ assert.equal(x.gate.row(x.owner,p.id).phase,'READY');assert.equal(x.db.prepare('SELECT count(*) n FROM autonomy_policies').get().n,0);
+});
 
 test('rebalance binds agent-held sells and subsequent purchases without counting token atoms as USDC',async t=>{
  const x=fixture(t),{id,status,...doc}=x.plan;

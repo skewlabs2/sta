@@ -1,0 +1,109 @@
+{
+  "schema": "sta.continuous-verification/v1",
+  "observedAt": "2026-10-07T14:27:26.790982+00:00",
+  "host": "authorized-canada-host",
+  "nodeVersion": "v22.23.2",
+  "validation": {
+    "runs": [
+      {
+        "name": "focused-tests.tap",
+        "tests": 94,
+        "passed": 94,
+        "failed": 0,
+        "sha256": "806453d7dbad2c1e85430f5e767247ca8e39e94dea3d18b94229e2ea22ce196a"
+      },
+      {
+        "name": "delta-tests.tap",
+        "tests": 38,
+        "passed": 38,
+        "failed": 0,
+        "sha256": "2d1a2d15979140dd555106340fc140a5c2a3429ab60ed7895446410bfe9f8b22"
+      },
+      {
+        "name": "ongoing-final-tests.tap",
+        "tests": 18,
+        "passed": 18,
+        "failed": 0,
+        "sha256": "5ff18e7d1ad6d7d7a676421b196140e03dd66f2eb2edc7eba38d7d6d6130e43c"
+      }
+    ],
+    "uniqueTestsVerified": 96,
+    "syntaxChecked": true,
+    "liveChainTransactionsInTests": false
+  },
+  "deployment": {
+    "buildId": "pGxViYHT3msKUTZS0gJUv",
+    "buildResult": "success",
+    "services": [
+      "xtxc-autonomy.service",
+      "xtxc-research-worker.service",
+      "xtxc-web-autonomy-v11.service"
+    ],
+    "publicPage": {
+      "url": "https://xtxc.trade/exchange?view=research",
+      "status": 200,
+      "buildIdMatches": true,
+      "componentStatus": 200,
+      "componentBytesMatchBuild": true
+    },
+    "anonymousApi": [
+      {
+        "method": "GET",
+        "status": 401,
+        "authorityRejected": true
+      },
+      {
+        "method": "POST",
+        "status": 403,
+        "authorityRejected": true
+      }
+    ],
+    "sourceRuntimeBytesMatch": true,
+    "legacyRecordsUnchanged": true
+  },
+  "readiness": {
+    "ok": true,
+    "mainnetGenesisVerified": true,
+    "stockmeshReleaseVerified": true,
+    "existingWalletBindingVerified": true,
+    "readOnly": true
+  },
+  "operatingStatus": {
+    "ok": true,
+    "authority": "OWNER_SIGNED_OPERATING_MANDATE",
+    "running": 0,
+    "continuous": 0
+  },
+  "liveExecution": {
+    "newOperatingMandates": 0,
+    "newOrders": 0,
+    "newFills": 0,
+    "initialOwnerSignatureRequired": true
+  },
+  "sourceSha256": {
+    "lib/research-ongoing-control.mjs": "7b548d6d89a9fd17e8222df6ea938622dd586ede70d9bce40a360f30692ef41c",
+    "lib/research-ongoing-runtime.mjs": "48eb70d78c91d38a676ce79d2f69976327c57e52e964fda54290b64f6129fb07",
+    "lib/research-ongoing-feed.mjs": "c85e004412f7de5964c09ee26522b017a6f24f47539fc63bc81284e35fd20ca9",
+    "lib/research-ongoing-policy.mjs": "25a5d3ff2342d8ad8bd02606b576e689cf2039fd19c9a1f625501f6dc4fe4fd5",
+    "lib/research-ongoing-journal.mjs": "610e3c0a0ef7cbdd998f54786bfd58eca6b04455e1d1fec8249777da2089e8de",
+    "lib/research-ongoing-decision.mjs": "6db3a0899fbf83703ba2daf27b65c97684496fd3982a595d2db3c50282eed557",
+    "lib/research-agent-core.mjs": "79db8a41cc4a54b5932695a881767ff7a57db6aaeb582df4c9f3a17e30fe6d89",
+    "lib/research-autonomy-control.mjs": "8add105de68d9e58f3ba17b865e03aeb43e1fb5c0fa86a8668fa83f68527650d",
+    "lib/research-autonomy-privy.mjs": "26e301fcce3ccc3d83e6dabf8adeae0fb0d43074768fdbf12ae2c7c66cb76d2a",
+    "scripts/research-agent-worker.mjs": "afcb0b79cc56026199228d88c2c9292a70dce5503320de4c42edba9fb96ead63",
+    "scripts/research-autonomy-service.mjs": "edb5c8cc8074a8170e167e6cf8e40ba2b3afc0eb751b4160c2bed6fa10f086bd",
+    "integration/next/ongoing-route.ts": "322e42d513ba2abf2739379aea924d00754fbed268c6b0de2ddad9d4c18055f6",
+    "integration/next/research-ongoing-panel.tsx": "54a00476ec9749780a041f404f51c3e540aed3599c52033f60895acde2200824",
+    "tests/research-ongoing.test.mjs": "205f264d2729cdf8767418c0fd7d250408208cc72bf4c945ec32443788800b99",
+    "tests/fixtures/ongoing.mjs": "67bc6e75164f9d29d174baf24d0fd76af77a6c63d4d66b25db3f8c56d6696b4d",
+    "tests/research-autonomy-control.test.mjs": "58d0dc8c8d01ba411a8a396e700e84ea4afd25c71f96e1e33952fcd0e3476634",
+    "tools/install-ongoing-integration.py": "66920bc7ca4029b91ab651c71ebffa94b0c2e754563116140b5e74e149c9460a",
+    "docs/CONTINUOUS_TRADING.md": "83bb5cf169fe98326a10a5bcb52ce1bb6811f96af4e7e821040e48fa308f061d"
+  },
+  "limitations": [
+    "Execution authority is enforced by the trusted offchain Privy gate.",
+    "Integration trading tests use simulated chain and provider responses.",
+    "No new owner operating mandate has been activated.",
+    "Existing optional Farcaster and viem dependency warnings remain outside this change."
+  ]
+}
